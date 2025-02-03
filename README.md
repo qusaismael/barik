@@ -21,7 +21,7 @@
 <br>
 
 <div align="center">
-  <video src="resources/preview-video.mp4" autoplay loop muted playsinline>
+  <video src="https://github.com/user-attachments/assets/33cfd2c2-e961-4d04-8012-664db0113d4f" autoplay loop muted playsinline>
 </div>
 <br>
 
