@@ -29,7 +29,7 @@
 
 1. Install [yabai](https://github.com/koekeishiya/yabai), set up spaces and paddings ([example](https://github.com/mocki-toki/barik/main/example/.yabairc))
 2. Install [skhd](https://github.com/koekeishiya/skhd) for switching spaces (or use another hotkey manager— for example, I like to use [Raycast](https://www.raycast.com/) scripts)
-3. Download barik from [Releases](https://github.com/mocki-toki/barik/releases) and move it to your Applications folder
+3. Download barik from [Releases](https://github.com/mocki-toki/barik/releases), unzip and move it to your Applications folder
 4. Hide the system menu bar in System Settings
 5. Run barik from the Applications folder
 6. Add barik to your login items
