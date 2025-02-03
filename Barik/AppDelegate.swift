@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-/// This class creates the main window and starts the mouse monitor.
+/// This class creates the main window.
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NonFocusableWindow!
 
@@ -35,9 +35,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         window.contentView = NSHostingView(rootView: MainView())
     }
-}
-
-/// This class holds a hover state.
-class HoverState: ObservableObject {
-    @Published var isHovered: Bool = false
 }

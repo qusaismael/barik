@@ -16,12 +16,12 @@
 
 <div style="height: 8px;"></div>
 
-**barik** is a lightweight macOS menu bar replacement. It works with [**yabai**](https://github.com/koekeishiya/yabai) and displays the currently selected space in a sleek, macOS-style panel with animations. Now you know which number to press to switch to the desired space!
+**barik** is a lightweight macOS menu bar replacement. Powered by [**yabai**](https://github.com/koekeishiya/yabai) and displays the currently selected space in a sleek, macOS-style panel with animations. Now you know which number to press to switch to the desired space!
 
 <br>
 
 <div align="center">
-  <video src="resources/preview-video.mp4" autoplay loop muted playsinline>
+  <video src="https://github.com/user-attachments/assets/33cfd2c2-e961-4d04-8012-664db0113d4f" autoplay loop muted playsinline>
 </div>
 <br>
 
@@ -29,7 +29,7 @@
 
 1. Install [yabai](https://github.com/koekeishiya/yabai), set up spaces and paddings ([example](https://github.com/mocki-toki/barik/main/example/.yabairc))
 2. Install [skhd](https://github.com/koekeishiya/skhd) for switching spaces (or use another hotkey manager— for example, I like to use [Raycast](https://www.raycast.com/) scripts)
-3. Download barik from [Releases](https://github.com/mocki-toki/barik/releases) and move it to your Applications folder
+3. Download barik from [Releases](https://github.com/mocki-toki/barik/releases), unzip and move it to your Applications folder
 4. Hide the system menu bar in System Settings
 5. Run barik from the Applications folder
 6. Add barik to your login items
@@ -42,7 +42,7 @@ The space indicators are not clickable because barik is designed to be keyboard-
 
 ## Where Are the Menu Items?
 
-Menu items are not supported. The original philosophy of barik is to minimize unnecessary information and emphasize keyboard-driven control. However, you can use [Raycast](https://www.raycast.com/), which supports menu items through an interface similar to Spotlight. I personally use it with the `alt + tab` shortcut, and it works very well.
+Menu items are not supported. The original philosophy of barik is to minimize unnecessary information and emphasize keyboard-driven control. However, you can use [Raycast](https://www.raycast.com/), which supports menu items through an interface similar to Spotlight. I personally use it with the `option + tab` shortcut, and it works very well.
 
 <img src="resources/raycast-menu-items.jpeg" alt="Raycast Menu Items" style="border-radius: 15px;">
 
