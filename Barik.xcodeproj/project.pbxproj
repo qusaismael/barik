@@ -6,63 +6,45 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXContainerItemProxy section */
-		C10E2F9C2D41235B00AC957C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C10E2F822D41235900AC957C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C10E2F892D41235900AC957C;
-			remoteInfo = Barik;
-		};
-		C10E2FA62D41235B00AC957C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C10E2F822D41235900AC957C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C10E2F892D41235900AC957C;
-			remoteInfo = Barik;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		C10E2F8A2D41235900AC957C /* Barik.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Barik.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C10E2F9B2D41235B00AC957C /* BarikTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BarikTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C10E2FA52D41235B00AC957C /* BarikUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BarikUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C10E2FD22D41342C00AC957C /* Exceptions for "Barik" folder in "Barik" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Color+Hex.swift",
+				Info.plist,
+			);
+			target = C10E2F892D41235900AC957C /* Barik */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		C1C573202D4285FF00D316A9 /* Exceptions for "Barik" folder in "Copy Bundle Resources" phase from "Barik" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = C10E2F882D41235900AC957C /* Resources */;
+			membershipExceptions = (
+				"Color+Hex.swift",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C10E2F8C2D41235900AC957C /* Barik */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C10E2FD22D41342C00AC957C /* Exceptions for "Barik" folder in "Barik" target */,
+				C1C573202D4285FF00D316A9 /* Exceptions for "Barik" folder in "Copy Bundle Resources" phase from "Barik" target */,
+			);
 			path = Barik;
-			sourceTree = "<group>";
-		};
-		C10E2F9E2D41235B00AC957C /* BarikTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BarikTests;
-			sourceTree = "<group>";
-		};
-		C10E2FA82D41235B00AC957C /* BarikUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BarikUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C10E2F872D41235900AC957C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C10E2F982D41235B00AC957C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C10E2FA22D41235B00AC957C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -76,8 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				C10E2F8C2D41235900AC957C /* Barik */,
-				C10E2F9E2D41235B00AC957C /* BarikTests */,
-				C10E2FA82D41235B00AC957C /* BarikUITests */,
 				C10E2F8B2D41235900AC957C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,8 +66,6 @@
 			isa = PBXGroup;
 			children = (
 				C10E2F8A2D41235900AC957C /* Barik.app */,
-				C10E2F9B2D41235B00AC957C /* BarikTests.xctest */,
-				C10E2FA52D41235B00AC957C /* BarikUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -117,52 +95,6 @@
 			productReference = C10E2F8A2D41235900AC957C /* Barik.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C10E2F9A2D41235B00AC957C /* BarikTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C10E2FB22D41235B00AC957C /* Build configuration list for PBXNativeTarget "BarikTests" */;
-			buildPhases = (
-				C10E2F972D41235B00AC957C /* Sources */,
-				C10E2F982D41235B00AC957C /* Frameworks */,
-				C10E2F992D41235B00AC957C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C10E2F9D2D41235B00AC957C /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				C10E2F9E2D41235B00AC957C /* BarikTests */,
-			);
-			name = BarikTests;
-			packageProductDependencies = (
-			);
-			productName = BarikTests;
-			productReference = C10E2F9B2D41235B00AC957C /* BarikTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		C10E2FA42D41235B00AC957C /* BarikUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C10E2FB52D41235B00AC957C /* Build configuration list for PBXNativeTarget "BarikUITests" */;
-			buildPhases = (
-				C10E2FA12D41235B00AC957C /* Sources */,
-				C10E2FA22D41235B00AC957C /* Frameworks */,
-				C10E2FA32D41235B00AC957C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C10E2FA72D41235B00AC957C /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				C10E2FA82D41235B00AC957C /* BarikUITests */,
-			);
-			name = BarikUITests;
-			packageProductDependencies = (
-			);
-			productName = BarikUITests;
-			productReference = C10E2FA52D41235B00AC957C /* BarikUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -175,14 +107,6 @@
 				TargetAttributes = {
 					C10E2F892D41235900AC957C = {
 						CreatedOnToolsVersion = 16.2;
-					};
-					C10E2F9A2D41235B00AC957C = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = C10E2F892D41235900AC957C;
-					};
-					C10E2FA42D41235B00AC957C = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = C10E2F892D41235900AC957C;
 					};
 				};
 			};
@@ -201,28 +125,12 @@
 			projectRoot = "";
 			targets = (
 				C10E2F892D41235900AC957C /* Barik */,
-				C10E2F9A2D41235B00AC957C /* BarikTests */,
-				C10E2FA42D41235B00AC957C /* BarikUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C10E2F882D41235900AC957C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C10E2F992D41235B00AC957C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C10E2FA32D41235B00AC957C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,34 +147,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C10E2F972D41235B00AC957C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C10E2FA12D41235B00AC957C /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C10E2F9D2D41235B00AC957C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C10E2F892D41235900AC957C /* Barik */;
-			targetProxy = C10E2F9C2D41235B00AC957C /* PBXContainerItemProxy */;
-		};
-		C10E2FA72D41235B00AC957C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C10E2F892D41235900AC957C /* Barik */;
-			targetProxy = C10E2FA62D41235B00AC957C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C10E2FAD2D41235B00AC957C /* Debug */ = {
@@ -397,9 +278,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Barik/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_FILE = Barik/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We need this permission for displaying calendar events";
+				INFOPLIST_KEY_NSHumanReadableCopyright = Pansy;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -422,9 +308,14 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Barik/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_FILE = Barik/Info.plist;
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We need this permission for displaying calendar events";
+				INFOPLIST_KEY_NSHumanReadableCopyright = Pansy;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -434,70 +325,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		C10E2FB32D41235B00AC957C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Pansy.BarikTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Barik.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Barik";
-			};
-			name = Debug;
-		};
-		C10E2FB42D41235B00AC957C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Pansy.BarikTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Barik.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Barik";
-			};
-			name = Release;
-		};
-		C10E2FB62D41235B00AC957C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Pansy.BarikUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = Barik;
-			};
-			name = Debug;
-		};
-		C10E2FB72D41235B00AC957C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Pansy.BarikUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = Barik;
 			};
 			name = Release;
 		};
@@ -518,24 +345,6 @@
 			buildConfigurations = (
 				C10E2FB02D41235B00AC957C /* Debug */,
 				C10E2FB12D41235B00AC957C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C10E2FB22D41235B00AC957C /* Build configuration list for PBXNativeTarget "BarikTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C10E2FB32D41235B00AC957C /* Debug */,
-				C10E2FB42D41235B00AC957C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C10E2FB52D41235B00AC957C /* Build configuration list for PBXNativeTarget "BarikUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C10E2FB62D41235B00AC957C /* Debug */,
-				C10E2FB72D41235B00AC957C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

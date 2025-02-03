@@ -1,17 +1,12 @@
-//
-//  BarikApp.swift
-//  Barik
-//
-//  Created by Simon Butenko on 22.01.2025.
-//
-
 import SwiftUI
 
 @main
 struct BarikApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Settings {
+            EmptyView()
         }
     }
 }

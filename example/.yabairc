@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+
+## Global settings
+yabai -m config split_ratio 0.5
+yabai -m config window_placement first_child
+yabai -m config window_shadow off
+
+## General space settings
+yabai -m config layout bsp
+yabai -m config top_padding 55
+yabai -m config right_padding 10
+yabai -m config bottom_padding 10
+yabai -m config left_padding 10
+yabai -m config window_gap 5
+
+yabai -m config --space 2 layout stack
+yabai -m config --space 6 layout stack
+yabai -m config --space 8 layout stack
+
+## Space - Browser
+yabai -m rule --add space=1 label="Arc" app="^Arc$"
+yabai -m rule --add space=1 label="Safari" app="^Safari$"
+
+## Space - Development
+yabai -m rule --add space=2 label="Cursor" app="^Cursor$"
+yabai -m rule --add space=2 label="Visual Studio Code" app="^Visual Studio Code$"
+yabai -m rule --add space=2 label="Xcode" app="^Xcode$"
+yabai -m rule --add space=2 label="Simulator" app="^Simulator$" manage=off
+yabai -m rule --add space=2 label="OrbStack" app="^OrbStack$"
+yabai -m rule --add space=2 label="Lens" app="^Lens$"
+yabai -m rule --add space=2 label="Chrome" app="^Google Chrome$"
+yabai -m rule --add space=2 label="GitKraken" app="^GitKraken$"
+yabai -m rule --add space=2 label="Postman" app="^Postman$"
+yabai -m rule --add space=2 label="Proxyman" app="^Proxyman$"
+yabai -m rule --add space=2 label="Android Emulator" app="^Android Emulator$" manage=off
+
+## Space - Terminal
+yabai -m rule --add space=3 label="Terminal" app="^Terminal$"
+yabai -m rule --add space=3 label="Warp" app="^Warp$"
+
+## Space - Communication
+yabai -m rule --add space=4 label="Telegram" app="^Telegram$"
+yabai -m rule --add space=4 label="Discord" app="^Discord$"
+
+## Space - Finder
+yabai -m rule --add space=5 label="Finder" app="^Finder$"
+
+## Space - Events
+yabai -m rule --add space=6 label="Calendar" app="^Calendar$"
+yabai -m rule --add space=6 label="Mail" app="^Mail$"
+
+## Space - Design
+yabai -m rule --add space=7 label="Figma" app="^Figma$"
+
+## Space - Productivity
+yabai -m rule --add space=8 label="Obsidian" app="^Obsidian$"
+yabai -m rule --add space=8 label="Todoist" app="^Todoist$"
+
+## Space - Media
+yabai -m rule --add space=9 label="Spotify" app="^Spotify$"
+
+
+#### All Screens
+####################################################################################################
+
+## Sticky windows
+yabai -m rule --add manage=off label="System Settings" app="System Settings" sticky="on"
+yabai -m rule --add manage=off label="Activity Monitor" app="Activity Monitor" sticky="on"
+yabai -m rule --add manage=off label="Toggl Track" app="Toggl Track" sticky="on"
+yabai -m rule --add manage=off label="AdGuard" app="AdGuard" sticky="on"
+yabai -m rule --add manage=off label="App Store" app="App Store" sticky="on"
+yabai -m rule --add manage=off app="Raycast" sticky="on"
+yabai -m rule --add manage=off label="Tunnelblick" app="Tunnelblick" sticky="on"
+yabai -m rule --add manage=off label="Calculator" app="Calculator" sticky="on"
+yabai -m rule --add manage=off label="Console" app="Console" sticky="on"
+yabai -m rule --add manage=off label="Contexts" app="Contexts" sticky="on"
+yabai -m rule --add manage=off label="Dictionary" app="Dictionary" sticky="on"
+yabai -m rule --add manage=off label="Preview" app="Preview" sticky="on"
+yabai -m rule --add manage=off label="Stats" app="Stats" sticky="on"
+yabai -m rule --add manage=off label="System Information" app="System Information" sticky="on"
+yabai -m rule --add manage=off label="VoiceOver Utility" app="VoiceOver Utility" sticky="on"
+yabai -m rule --add manage=off label="Shottr" app="Shottr" sticky="on"
+yabai -m rule --add manage=off label="iPhone Mirroring" app="iPhone Mirroring" sticky="on"
+yabai -m rule --add manage=off label="Bartender 5" app="Bartender 5" sticky="on"
+yabai -m rule --add manage=off label="ChatGPT" app="ChatGPT" sticky="on"
+
+## Unmanaged windows
+yabai -m rule --add manage=off title="(Copy|Bin|About This Mac|Info)"
+yabai -m rule --add manage=off title="(Settings|Preferences)"
+yabai -m rule --add manage=off title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advanced)$"
+yabai -m rule --add manage=off title="^Exports"
+yabai -m rule --add manage=off title="^Opening"
+
+#### Events
+####################################################################################################
+
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
