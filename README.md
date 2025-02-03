@@ -16,7 +16,7 @@
 
 <div style="height: 8px;"></div>
 
-**barik** is a lightweight macOS menu bar replacement. It works with [**yabai**](https://github.com/koekeishiya/yabai) and displays the currently selected space in a sleek, macOS-style panel with animations. Now you know which number to press to switch to the desired space!
+**barik** is a lightweight macOS menu bar replacement. Powered by [**yabai**](https://github.com/koekeishiya/yabai) and displays the currently selected space in a sleek, macOS-style panel with animations. Now you know which number to press to switch to the desired space!
 
 <br>
 
