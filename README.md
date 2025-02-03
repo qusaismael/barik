@@ -42,7 +42,7 @@ The space indicators are not clickable because barik is designed to be keyboard-
 
 ## Where Are the Menu Items?
 
-Menu items are not supported. The original philosophy of barik is to minimize unnecessary information and emphasize keyboard-driven control. However, you can use [Raycast](https://www.raycast.com/), which supports menu items through an interface similar to Spotlight. I personally use it with the `alt + tab` shortcut, and it works very well.
+Menu items are not supported. The original philosophy of barik is to minimize unnecessary information and emphasize keyboard-driven control. However, you can use [Raycast](https://www.raycast.com/), which supports menu items through an interface similar to Spotlight. I personally use it with the `option + tab` shortcut, and it works very well.
 
 <img src="resources/raycast-menu-items.jpeg" alt="Raycast Menu Items" style="border-radius: 15px;">
 
