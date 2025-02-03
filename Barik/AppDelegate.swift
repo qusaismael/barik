@@ -4,14 +4,11 @@ import SwiftUI
 /// This class creates the main window and starts the mouse monitor.
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NonFocusableWindow!
-    var hoverState = HoverState()
-    var monitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         configureActivationPolicy()
         setupWindow()
         window.orderFront(nil)
-        startMouseMonitor()
     }
 
     private func configureActivationPolicy() {
@@ -36,28 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.ignoresMouseEvents = false
         window.acceptsMouseMovedEvents = true
 
-        // Set the content view with our main SwiftUI view.
-        window.contentView = NSHostingView(rootView: MainView().environmentObject(hoverState))
-    }
-
-    private func startMouseMonitor() {
-        monitor = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [weak self] event in
-            guard let self = self else { return }
-            let mouseLocation = NSEvent.mouseLocation
-            let windowFrame = self.window.frame
-
-            // Define a rectangle on the right side of the window.
-            let rightRect = NSRect(
-                x: windowFrame.midX,
-                y: windowFrame.maxY - 55,
-                width: windowFrame.width / 2,
-                height: 55
-            )
-
-            DispatchQueue.main.async {
-                self.hoverState.isHovered = rightRect.contains(mouseLocation)
-            }
-        }
+        window.contentView = NSHostingView(rootView: MainView())
     }
 }
 
