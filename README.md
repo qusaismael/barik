@@ -1,6 +1,6 @@
 <div style="height: 8px;"></div>
 <p align="center" dir="auto">
-  <img src="resources/preview-image.png" alt="Barik" style="border-radius: 15px;">
+  <img src="resources/header-image.png" alt="Barik" style="border-radius: 15px;">
   <p align="center" dir="auto">
   <a href="LICENSE">
     <img alt="License Badge" src="https://img.shields.io/github/license/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
