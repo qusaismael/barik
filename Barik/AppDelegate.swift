@@ -17,7 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupWindow() {
         guard let screen = NSScreen.main?.visibleFrame else { return }
-        let windowFrame = NSRect(x: 0, y: 0, width: screen.size.width, height: screen.size.height)
+        let windowFrame = NSRect(
+            x: 0, y: 0, width: screen.size.width, height: screen.size.height)
 
         window = NonFocusableWindow(
             contentRect: windowFrame,
@@ -26,7 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             defer: false
         )
 
-        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopWindow)))
+        window.level = NSWindow.Level(
+            rawValue: Int(CGWindowLevelForKey(.desktopWindow)))
         window.backgroundColor = .clear
         window.hasShadow = false
         window.collectionBehavior = [.canJoinAllSpaces]

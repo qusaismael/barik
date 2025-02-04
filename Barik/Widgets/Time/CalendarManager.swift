@@ -6,9 +6,28 @@ import Foundation
 class CalendarManager: ObservableObject {
     @Published var nextEvent: EKEvent? = nil
     private let eventStore = EKEventStore()
+    private var timer: Timer?
 
     init() {
         requestAccess()
+        startMonitoring()
+    }
+
+    deinit {
+        stopMonitoring()
+    }
+
+    private func startMonitoring() {
+        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {
+            [weak self] _ in
+            self?.fetchNextEvent()
+        }
+        fetchNextEvent()
+    }
+
+    private func stopMonitoring() {
+        timer?.invalidate()
+        timer = nil
     }
 
     private func requestAccess() {
@@ -16,7 +35,8 @@ class CalendarManager: ObservableObject {
             if granted && error == nil {
                 self?.fetchNextEvent()
             } else {
-                print("Calendar access not granted: \(String(describing: error))")
+                print(
+                    "Calendar access not granted: \(String(describing: error))")
             }
         }
     }
@@ -26,7 +46,9 @@ class CalendarManager: ObservableObject {
         let now = Date()
         let calendar = Calendar.current
 
-        guard let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: now)
+        guard
+            let endOfDay = calendar.date(
+                bySettingHour: 23, minute: 59, second: 59, of: now)
         else {
             print("Failed to determine end of day.")
             return
@@ -34,7 +56,9 @@ class CalendarManager: ObservableObject {
 
         let predicate = eventStore.predicateForEvents(
             withStart: now, end: endOfDay, calendars: calendars)
-        let events = eventStore.events(matching: predicate).sorted { $0.startDate < $1.startDate }
+        let events = eventStore.events(matching: predicate).sorted {
+            $0.startDate < $1.startDate
+        }
 
         DispatchQueue.main.async {
             self.nextEvent = events.first

@@ -1,0 +1,83 @@
+import SwiftUICore
+
+struct SpaceIndicatorWidget: View {
+    @ObservedObject var viewModel = SpaceViewModel()
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(viewModel.spaces) { space in
+                SpaceView(space: space)
+            }
+        }.animation(.smooth(duration: 0.3), value: viewModel.spaces)
+    }
+}
+
+/// This view shows a space with its windows.
+private struct SpaceView: View {
+    let space: SpaceEntity
+
+    var body: some View {
+        let isFocused = space.windows.contains { $0.isFocused }
+        HStack(spacing: 8) {
+            Spacer().frame(width: 2)
+            Text("\(space.id)")
+                .font(.headline)
+                .frame(minWidth: 15)
+                .fixedSize(horizontal: true, vertical: false)
+            ForEach(space.windows) { window in
+                WindowView(window: window, space: space)
+            }
+            Spacer().frame(width: 2)
+        }
+        .frame(height: 30)
+        .background(
+            isFocused ? Color.white.opacity(0.4) : Color.white.opacity(0.1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .shadow(radius: 2)
+        .transition(.blurReplace)
+    }
+}
+
+/// This view shows a window and its icon.
+private struct WindowView: View {
+    let window: WindowEntity
+    let space: SpaceEntity
+
+    var body: some View {
+        let size: CGFloat = 21
+        // Use the window title if there are more than one window of the same app.
+        let title =
+            space.windows.filter { $0.appName == window.appName }.count > 1
+            ? window.title : (window.appName ?? "")
+        let spaceIsFocused = space.windows.contains { $0.isFocused }
+        HStack {
+            ZStack {
+                if let icon = window.appIcon {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .frame(width: size, height: size)
+                        .shadow(
+                            color: Color(.sRGBLinear, white: 0, opacity: 0.1),
+                            radius: 2)
+                } else {
+                    Image(systemName: "questionmark.circle")
+                        .resizable()
+                        .frame(width: size, height: size)
+                }
+            }
+            .opacity(spaceIsFocused && !window.isFocused ? 0.5 : 1)
+            .transition(.blurReplace)
+
+            if window.isFocused, !title.isEmpty {
+                HStack {
+                    Text(title)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .shadow(radius: 3)
+                    Spacer().frame(width: 5)
+                }
+                .transition(.blurReplace)
+            }
+        }
+    }
+}

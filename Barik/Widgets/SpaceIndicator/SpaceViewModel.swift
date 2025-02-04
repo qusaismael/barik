@@ -4,12 +4,30 @@ import Foundation
 /// This view model loads the spaces and their windows.
 class SpaceViewModel: ObservableObject {
     @Published var spaces: [SpaceEntity] = []
+    private var timer: Timer?
 
     init() {
+        startMonitoring()
+    }
+
+    deinit {
+        stopMonitoring()
+    }
+
+    private func startMonitoring() {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {
+            [weak self] time in
+            self?.loadSpaces()
+        }
         loadSpaces()
     }
 
-    func loadSpaces() {
+    private func stopMonitoring() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    private func loadSpaces() {
         DispatchQueue.global(qos: .background).async {
             if let fetchedSpaces = getSpacesWithWindows() {
                 let sortedSpaces = fetchedSpaces.sorted { $0.id < $1.id }
@@ -43,7 +61,8 @@ private func runYabaiCommand(arguments: [String]) -> Data? {
 
 /// Get the list of spaces.
 private func fetchSpaces() -> [SpaceEntity]? {
-    guard let data = runYabaiCommand(arguments: ["-m", "query", "--spaces"]) else {
+    guard let data = runYabaiCommand(arguments: ["-m", "query", "--spaces"])
+    else {
         return nil
     }
     let decoder = JSONDecoder()
@@ -58,7 +77,8 @@ private func fetchSpaces() -> [SpaceEntity]? {
 
 /// Get the list of windows.
 private func fetchWindows() -> [WindowEntity]? {
-    guard let data = runYabaiCommand(arguments: ["-m", "query", "--windows"]) else {
+    guard let data = runYabaiCommand(arguments: ["-m", "query", "--windows"])
+    else {
         return nil
     }
     let decoder = JSONDecoder()
@@ -77,7 +97,9 @@ private func getSpacesWithWindows() -> [SpaceEntity]? {
         return nil
     }
 
-    let filteredWindows = windows.filter { !($0.isHidden || $0.isFloating || $0.isSticky) }
+    let filteredWindows = windows.filter {
+        !($0.isHidden || $0.isFloating || $0.isSticky)
+    }
     var spaceDict = Dictionary(uniqueKeysWithValues: spaces.map { ($0.id, $0) })
 
     for window in filteredWindows {

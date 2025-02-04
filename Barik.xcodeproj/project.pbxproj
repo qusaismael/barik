@@ -11,32 +11,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C10E2FD22D41342C00AC957C /* Exceptions for "Barik" folder in "Barik" target */ = {
+		C1BB4B422D526B5C00A1F46E /* Exceptions for "Barik" folder in "Barik" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Color+Hex.swift",
 				Info.plist,
+				"Utils/Color+Hex.swift",
 			);
 			target = C10E2F892D41235900AC957C /* Barik */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		C1C573202D4285FF00D316A9 /* Exceptions for "Barik" folder in "Copy Bundle Resources" phase from "Barik" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = C10E2F882D41235900AC957C /* Resources */;
-			membershipExceptions = (
-				"Color+Hex.swift",
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		C10E2F8C2D41235900AC957C /* Barik */ = {
+		C1BB4B332D526B5C00A1F46E /* Barik */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				C10E2FD22D41342C00AC957C /* Exceptions for "Barik" folder in "Barik" target */,
-				C1C573202D4285FF00D316A9 /* Exceptions for "Barik" folder in "Copy Bundle Resources" phase from "Barik" target */,
+				C1BB4B422D526B5C00A1F46E /* Exceptions for "Barik" folder in "Barik" target */,
 			);
 			path = Barik;
 			sourceTree = "<group>";
@@ -57,8 +46,8 @@
 		C10E2F812D41235900AC957C = {
 			isa = PBXGroup;
 			children = (
-				C10E2F8C2D41235900AC957C /* Barik */,
 				C10E2F8B2D41235900AC957C /* Products */,
+				C1BB4B332D526B5C00A1F46E /* Barik */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,7 +75,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				C10E2F8C2D41235900AC957C /* Barik */,
+				C1BB4B332D526B5C00A1F46E /* Barik */,
 			);
 			name = Barik;
 			packageProductDependencies = (

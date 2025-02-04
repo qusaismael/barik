@@ -18,7 +18,8 @@ class BatteryManager: ObservableObject {
 
     private func startMonitoring() {
         // Update every 1 second.
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {
+            [weak self] _ in
             self?.updateBatteryStatus()
         }
         updateBatteryStatus()
@@ -32,17 +33,22 @@ class BatteryManager: ObservableObject {
     /// This method updates the battery level and charging state.
     func updateBatteryStatus() {
         guard let snapshot = IOPSCopyPowerSourcesInfo()?.takeRetainedValue(),
-            let sources = IOPSCopyPowerSourcesList(snapshot)?.takeRetainedValue() as? [CFTypeRef]
+            let sources = IOPSCopyPowerSourcesList(snapshot)?
+                .takeRetainedValue() as? [CFTypeRef]
         else {
             return
         }
 
         for source in sources {
-            if let description = IOPSGetPowerSourceDescription(snapshot, source)?
+            if let description = IOPSGetPowerSourceDescription(
+                snapshot, source)?
                 .takeUnretainedValue() as? [String: Any],
-                let currentCapacity = description[kIOPSCurrentCapacityKey as String] as? Int,
-                let maxCapacity = description[kIOPSMaxCapacityKey as String] as? Int,
-                let charging = description[kIOPSIsChargingKey as String] as? Bool
+                let currentCapacity = description[
+                    kIOPSCurrentCapacityKey as String] as? Int,
+                let maxCapacity = description[kIOPSMaxCapacityKey as String]
+                    as? Int,
+                let charging = description[kIOPSIsChargingKey as String]
+                    as? Bool
             {
 
                 DispatchQueue.main.async {
