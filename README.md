@@ -1,16 +1,16 @@
 <p align="center" dir="auto">
   <img src="resources/header-image.png" alt="Barik"">
   <p align="center" dir="auto">
-  <a href="LICENSE">
-    <img alt="License Badge" src="https://img.shields.io/github/license/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
-  </a>
-  <a href="CHANGELOG.md">
-    <img alt="Changelog Badge" src="https://img.shields.io/badge/view-changelog-green.svg" style="max-width: 100%;">
-  </a>
-  <a href="https://github.com/mocki-toki/barik/issues">
-    <img alt="Issues Badge" src="https://img.shields.io/github/issues/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
-  </a>
-</p>
+    <a href="LICENSE">
+      <img alt="License Badge" src="https://img.shields.io/github/license/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
+    </a>
+    <a href="CHANGELOG.md">
+      <img alt="Changelog Badge" src="https://img.shields.io/badge/view-changelog-green.svg" style="max-width: 100%;">
+    </a>
+    <a href="https://github.com/mocki-toki/barik/issues">
+      <img alt="Issues Badge" src="https://img.shields.io/github/issues/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
+    </a>
+  </p>
 </p>
 
 **barik** is a lightweight macOS menu bar replacement. Powered by [**yabai**](https://github.com/koekeishiya/yabai) and displays the currently selected space in a sleek, macOS-style panel with animations. Now you know which number to press to switch to the desired space!
@@ -45,10 +45,6 @@
 
 **That's it!** Try switching spaces and see the panel in action.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a PR.
-
 ## Why Aren't the Space Indicators Clickable?
 
 PR [#7](https://github.com/mocki-toki/barik/issues/7)
@@ -65,6 +61,18 @@ If you’re accustomed to using menu items from the system menu bar, simply move
 
 <img src="resources/raycast-menu-items.jpeg" alt="Raycast Menu Items">
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit a PR.
+
 ## License
 
 [MIT](LICENSE)
+
+## Trademarks
+
+Apple and macOS are trademarks of Apple Inc. This project is not connected to Apple Inc. and does not have their approval or support.
+
+## Stars
+
+[![Stargazers over time](https://starchart.cc/mocki-toki/barik.svg?variant=adaptive)](https://starchart.cc/mocki-toki/barik)
