@@ -14,10 +14,11 @@ struct TimeWidget: View {
                 .fontWeight(.semibold)
             if let event = calendarManager.nextEvent {
                 Text(eventText(for: event))
-                    .foregroundStyle(Color.white.opacity(0.4))
+                    .foregroundStyle(Color.noActive)
                     .font(.subheadline)
             }
         }
+        .shadow(color: .foregroundShadowOutside, radius: 3)
         .onReceive(timer) { date in
             currentTime = date
         }

@@ -9,6 +9,7 @@ struct SpaceIndicatorWidget: View {
                 SpaceView(space: space)
             }
         }.animation(.smooth(duration: 0.3), value: viewModel.spaces)
+            .foregroundStyle(Color.foreground)
     }
 }
 
@@ -31,10 +32,10 @@ private struct SpaceView: View {
         }
         .frame(height: 30)
         .background(
-            isFocused ? Color.white.opacity(0.4) : Color.white.opacity(0.1)
+            isFocused ? Color.active : Color.noActive
         )
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-        .shadow(radius: 2)
+        .shadow(color: .shadow, radius: 2)
         .transition(.blurReplace)
     }
 }
@@ -58,7 +59,7 @@ private struct WindowView: View {
                         .resizable()
                         .frame(width: size, height: size)
                         .shadow(
-                            color: Color(.sRGBLinear, white: 0, opacity: 0.1),
+                            color: .iconShadow,
                             radius: 2)
                 } else {
                     Image(systemName: "questionmark.circle")
@@ -73,7 +74,7 @@ private struct WindowView: View {
                 HStack {
                     Text(title)
                         .fixedSize(horizontal: true, vertical: false)
-                        .shadow(radius: 3)
+                        .shadow(color: .foregroundShadow, radius: 3)
                     Spacer().frame(width: 5)
                 }
                 .transition(.blurReplace)

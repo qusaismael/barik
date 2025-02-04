@@ -29,7 +29,7 @@ struct MainView: View {
 
                     Spacer().frame(width: 15)
                     Rectangle()
-                        .fill(Color.white.opacity(0.6))
+                        .fill(Color.active)
                         .frame(width: 2, height: 15)
                         .clipShape(Capsule())
                     Spacer().frame(width: 15)
@@ -39,6 +39,7 @@ struct MainView: View {
                 TimeWidget()
                 Spacer().frame(width: 25)
             }
+            .foregroundStyle(Color.foregroundOutside)
 
         }
         .frame(height: 55)

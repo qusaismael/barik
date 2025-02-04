@@ -34,9 +34,9 @@ struct BatteryWidget: View {
         let isCharging = batteryManager.isCharging
 
         if isCharging {
-            return level > 60 ? .primary : .black
+            return .foregroundOutsideInvert
         } else {
-            return level > 20 ? .black.opacity(0.6) : .black
+            return level > 20 ? .foregroundOutsideInvert : .black
         }
     }
 
@@ -52,7 +52,7 @@ struct BatteryWidget: View {
             } else if level <= 20 {
                 return .yellow
             } else {
-                return .white.opacity(0.8)
+                return .icon
             }
         }
     }
