@@ -1,13 +1,12 @@
-import SwiftUICore
+import SwiftUI
 
 /// This view shows the battery status.
 struct BatteryWidget: View {
     @StateObject private var batteryManager = BatteryManager()
-
+    private var level: Int { batteryManager.batteryLevel }
+    private var isCharging: Bool { batteryManager.isCharging }
+        
     var body: some View {
-        let level = batteryManager.batteryLevel
-        let isCharging = batteryManager.isCharging
-
         ZStack(alignment: .leading) {
             BatteryBodyView()
                 .opacity(0.3)
@@ -30,9 +29,6 @@ struct BatteryWidget: View {
     }
 
     private var batteryTextColor: Color {
-        let level = batteryManager.batteryLevel
-        let isCharging = batteryManager.isCharging
-
         if isCharging {
             return .foregroundOutsideInvert
         } else {
@@ -41,9 +37,6 @@ struct BatteryWidget: View {
     }
 
     private var batteryColor: Color {
-        let level = batteryManager.batteryLevel
-        let isCharging = batteryManager.isCharging
-
         if isCharging {
             return .green
         } else {
@@ -64,7 +57,7 @@ private struct BatteryText: View {
     let isCharging: Bool
 
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .center, spacing: -1) {
             Text("\(level)")
                 .font(.system(size: 12))
             if isCharging && level != 100 {
@@ -87,11 +80,20 @@ private struct BatteryBodyView: View {
                 .resizable()
                 .scaledToFit()
             Rectangle()
-                .clipShape(RoundedRectangle(cornerRadius: 4))
+                .clipShape(RoundedRectangle(cornerRadius: 2))
                 .padding(.horizontal, 3)
                 .padding(.vertical, 2)
                 .offset(x: -2)
         }
         .compositingGroup()
+    }
+}
+
+struct BatteryWidget_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            BatteryWidget()
+        }.frame(width: 200, height: 100)
+            .background(.yellow)
     }
 }

@@ -1,5 +1,5 @@
 import EventKit
-import SwiftUICore
+import SwiftUI
 
 struct TimeWidget: View {
     @State private var currentTime = Date()
@@ -42,5 +42,13 @@ struct TimeWidget: View {
             text += ")"
         }
         return text
+    }
+}
+
+struct TimeWidget_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            TimeWidget()
+        }.frame(width: 500, height: 100)
     }
 }
