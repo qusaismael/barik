@@ -22,20 +22,22 @@ struct MainView: View {
                 Spacer()
             }
 
-            HStack {
+            HStack(spacing: 0) {
                 Spacer()
-                HStack(spacing: 0) {
+                HStack(spacing: 15) {
+                    NetworkWidget()
                     BatteryWidget()
-
-                    Spacer().frame(width: 15)
-                    Rectangle()
-                        .fill(Color.active)
-                        .frame(width: 2, height: 15)
-                        .clipShape(Capsule())
-                    Spacer().frame(width: 15)
                 }
-                .font(.system(size: 15))
-
+                    .shadow(color: .shadow, radius: 3)
+                    .font(.system(size: 16))
+                
+                Spacer().frame(width: 15)
+                Rectangle()
+                    .fill(Color.active)
+                    .frame(width: 2, height: 15)
+                    .clipShape(Capsule())
+                
+                Spacer().frame(width: 15)
                 TimeWidget()
                 Spacer().frame(width: 25)
             }
