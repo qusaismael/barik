@@ -14,7 +14,7 @@ struct TimeWidget: View {
                 .fontWeight(.semibold)
             if let event = calendarManager.nextEvent {
                 Text(eventText(for: event))
-                    .foregroundStyle(Color.noActive)
+                    .opacity(0.8)
                     .font(.subheadline)
             }
         }
