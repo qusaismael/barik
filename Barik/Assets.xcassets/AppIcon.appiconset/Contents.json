@@ -1,61 +1,61 @@
 {
   "images" : [
     {
-      "filename" : "Frame 1.png",
+      "filename" : "Icon 16.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "16x16"
     },
     {
-      "filename" : "Frame 2.png",
+      "filename" : "Icon 17.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "16x16"
     },
     {
-      "filename" : "Frame 3.png",
+      "filename" : "Icon 33.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "32x32"
     },
     {
-      "filename" : "Frame 4.png",
+      "filename" : "Icon 34.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "32x32"
     },
     {
-      "filename" : "Frame 5.png",
+      "filename" : "Icon 128.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "128x128"
     },
     {
-      "filename" : "Frame 6.png",
+      "filename" : "Icon 129.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "128x128"
     },
     {
-      "filename" : "Frame 7.png",
+      "filename" : "Icon 256.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "256x256"
     },
     {
-      "filename" : "Frame 8.png",
+      "filename" : "Icon 257.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "256x256"
     },
     {
-      "filename" : "Frame 9.png",
+      "filename" : "Icon 512.png",
       "idiom" : "mac",
       "scale" : "1x",
       "size" : "512x512"
     },
     {
-      "filename" : "Frame 10.png",
+      "filename" : "Icon 513.png",
       "idiom" : "mac",
       "scale" : "2x",
       "size" : "512x512"
