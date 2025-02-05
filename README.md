@@ -4,11 +4,14 @@
     <a href="LICENSE">
       <img alt="License Badge" src="https://img.shields.io/github/license/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
     </a>
+    <a href="https://github.com/mocki-toki/barik/issues">
+      <img alt="Issues Badge" src="https://img.shields.io/github/issues/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
+    </a>
     <a href="CHANGELOG.md">
       <img alt="Changelog Badge" src="https://img.shields.io/badge/view-changelog-green.svg" style="max-width: 100%;">
     </a>
-    <a href="https://github.com/mocki-toki/barik/issues">
-      <img alt="Issues Badge" src="https://img.shields.io/github/issues/mocki-toki/barik.svg?color=green" style="max-width: 100%;">
+    <a href="https://github.com/mocki-toki/barik/releases">
+      <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/mocki-toki/barik/total">
     </a>
   </p>
 </p>
