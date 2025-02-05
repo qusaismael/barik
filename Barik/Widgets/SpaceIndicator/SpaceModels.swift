@@ -34,7 +34,7 @@ struct WindowEntity: Codable, Identifiable, Equatable {
         spaceId = try container.decode(Int.self, forKey: .spaceId)
         title =
             try container.decodeIfPresent(String.self, forKey: .title)
-                ?? "Unnamed"
+            ?? "Unnamed"
         appName = try container.decodeIfPresent(String.self, forKey: .appName)
         isFocused = try container.decode(Bool.self, forKey: .isFocused)
         stackIndex =

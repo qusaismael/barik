@@ -110,7 +110,7 @@ private func getSpacesWithWindows() -> [SpaceEntity]? {
     }
 
     var resultSpaces = Array(spaceDict.values)
-    for index in 0 ..< resultSpaces.count {
+    for index in 0..<resultSpaces.count {
         resultSpaces[index].windows.sort { $0.stackIndex < $1.stackIndex }
     }
 

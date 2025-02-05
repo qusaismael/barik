@@ -51,7 +51,7 @@ private struct WindowView: View {
         // Use the window title if there are more than one window of the same app.
         let title =
             space.windows.filter { $0.appName == window.appName }.count > 1
-                ? window.title : (window.appName ?? "")
+            ? window.title : (window.appName ?? "")
         let spaceIsFocused = space.windows.contains { $0.isFocused }
         HStack {
             ZStack {
@@ -74,9 +74,13 @@ private struct WindowView: View {
 
             if window.isFocused, !title.isEmpty {
                 HStack {
-                    Text(title.count > titleMaxLength ? String(title.prefix(titleMaxLength)) + "..." : title)
-                        .fixedSize(horizontal: true, vertical: false)
-                        .shadow(color: .foregroundShadow, radius: 3)
+                    Text(
+                        title.count > titleMaxLength
+                            ? String(title.prefix(titleMaxLength)) + "..."
+                            : title
+                    )
+                    .fixedSize(horizontal: true, vertical: false)
+                    .shadow(color: .foregroundShadow, radius: 3)
                     Spacer().frame(width: 5)
                 }
                 .transition(.blurReplace)

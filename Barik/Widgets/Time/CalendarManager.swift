@@ -69,8 +69,8 @@ class CalendarManager: ObservableObject {
 
         let nextEvent =
             regularEvents.isEmpty
-                ? events.first
-                : regularEvents.first
+            ? events.first
+            : regularEvents.first
 
         DispatchQueue.main.async {
             self.nextEvent = nextEvent
