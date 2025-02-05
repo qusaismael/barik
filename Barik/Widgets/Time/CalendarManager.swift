@@ -48,20 +48,32 @@ class CalendarManager: ObservableObject {
 
         guard
             let endOfDay = calendar.date(
-                bySettingHour: 23, minute: 59, second: 59, of: now)
+                bySettingHour: 23,
+                minute: 59,
+                second: 59,
+                of: now)
         else {
             print("Failed to determine end of day.")
             return
         }
 
         let predicate = eventStore.predicateForEvents(
-            withStart: now, end: endOfDay, calendars: calendars)
-        let events = eventStore.events(matching: predicate).sorted {
-            $0.startDate < $1.startDate
-        }
+            withStart: now,
+            end: endOfDay,
+            calendars: calendars)
+
+        let events = eventStore.events(matching: predicate)
+            .sorted { $0.startDate < $1.startDate }
+
+        let regularEvents = events.filter { !$0.isAllDay }
+
+        let nextEvent =
+            regularEvents.isEmpty
+                ? events.first
+                : regularEvents.first
 
         DispatchQueue.main.async {
-            self.nextEvent = events.first
+            self.nextEvent = nextEvent
         }
     }
 }
