@@ -46,6 +46,7 @@ private struct WindowView: View {
     let space: SpaceEntity
 
     var body: some View {
+        let titleMaxLength = 50
         let size: CGFloat = 21
         // Use the window title if there are more than one window of the same app.
         let title =
@@ -72,7 +73,7 @@ private struct WindowView: View {
 
             if window.isFocused, !title.isEmpty {
                 HStack {
-                    Text(title)
+                    Text(title.count > titleMaxLength ? String(title.prefix(titleMaxLength)) + "..." : title)
                         .fixedSize(horizontal: true, vertical: false)
                         .shadow(color: .foregroundShadow, radius: 3)
                     Spacer().frame(width: 5)
