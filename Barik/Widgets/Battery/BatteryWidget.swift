@@ -5,7 +5,7 @@ struct BatteryWidget: View {
     @StateObject private var batteryManager = BatteryManager()
     private var level: Int { batteryManager.batteryLevel }
     private var isCharging: Bool { batteryManager.isCharging }
-        
+
     var body: some View {
         ZStack(alignment: .leading) {
             BatteryBodyView()

@@ -51,7 +51,7 @@ private struct WindowView: View {
         // Use the window title if there are more than one window of the same app.
         let title =
             space.windows.filter { $0.appName == window.appName }.count > 1
-            ? window.title : (window.appName ?? "")
+                ? window.title : (window.appName ?? "")
         let spaceIsFocused = space.windows.contains { $0.isFocused }
         HStack {
             ZStack {
@@ -61,7 +61,8 @@ private struct WindowView: View {
                         .frame(width: size, height: size)
                         .shadow(
                             color: .iconShadow,
-                            radius: 2)
+                            radius: 2
+                        )
                 } else {
                     Image(systemName: "questionmark.circle")
                         .resizable()

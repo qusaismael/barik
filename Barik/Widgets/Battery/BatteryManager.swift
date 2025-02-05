@@ -33,8 +33,8 @@ class BatteryManager: ObservableObject {
     /// This method updates the battery level and charging state.
     func updateBatteryStatus() {
         guard let snapshot = IOPSCopyPowerSourcesInfo()?.takeRetainedValue(),
-            let sources = IOPSCopyPowerSourcesList(snapshot)?
-                .takeRetainedValue() as? [CFTypeRef]
+              let sources = IOPSCopyPowerSourcesList(snapshot)?
+              .takeRetainedValue() as? [CFTypeRef]
         else {
             return
         }
@@ -44,13 +44,13 @@ class BatteryManager: ObservableObject {
                 snapshot, source)?
                 .takeUnretainedValue() as? [String: Any],
                 let currentCapacity = description[
-                    kIOPSCurrentCapacityKey as String] as? Int,
+                    kIOPSCurrentCapacityKey as String
+                ] as? Int,
                 let maxCapacity = description[kIOPSMaxCapacityKey as String]
-                    as? Int,
+                as? Int,
                 let charging = description[kIOPSIsChargingKey as String]
-                    as? Bool
+                as? Bool
             {
-
                 DispatchQueue.main.async {
                     self.batteryLevel = (currentCapacity * 100) / maxCapacity
                     self.isCharging = charging

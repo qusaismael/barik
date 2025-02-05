@@ -28,15 +28,15 @@ struct MainView: View {
                     NetworkWidget()
                     BatteryWidget()
                 }
-                    .shadow(color: .shadow, radius: 3)
-                    .font(.system(size: 16))
-                
+                .shadow(color: .shadow, radius: 3)
+                .font(.system(size: 16))
+
                 Spacer().frame(width: 15)
                 Rectangle()
                     .fill(Color.active)
                     .frame(width: 2, height: 15)
                     .clipShape(Capsule())
-                
+
                 Spacer().frame(width: 15)
                 TimeWidget()
                 Spacer().frame(width: 25)

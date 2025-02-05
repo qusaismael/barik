@@ -24,8 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             contentRect: windowFrame,
             styleMask: [.borderless, .fullSizeContentView],
             backing: .buffered,
-            defer: false
-        )
+            defer: false)
 
         window.level = NSWindow.Level(
             rawValue: Int(CGWindowLevelForKey(.desktopWindow)))

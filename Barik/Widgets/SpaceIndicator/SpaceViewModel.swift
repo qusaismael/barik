@@ -16,7 +16,7 @@ class SpaceViewModel: ObservableObject {
 
     private func startMonitoring() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {
-            [weak self] time in
+            [weak self] _ in
             self?.loadSpaces()
         }
         loadSpaces()
@@ -110,7 +110,7 @@ private func getSpacesWithWindows() -> [SpaceEntity]? {
     }
 
     var resultSpaces = Array(spaceDict.values)
-    for index in 0..<resultSpaces.count {
+    for index in 0 ..< resultSpaces.count {
         resultSpaces[index].windows.sort { $0.stackIndex < $1.stackIndex }
     }
 

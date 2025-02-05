@@ -23,7 +23,9 @@ class NetworkManager: ObservableObject {
 
             DispatchQueue.main.async {
                 // MARK: - Wi-Fi
-                if path.availableInterfaces.contains(where: { $0.type == .wifi }) {
+
+                if path.availableInterfaces.contains(where: { $0.type == .wifi }
+                ) {
                     if path.usesInterfaceType(.wifi) {
                         switch path.status {
                         case .satisfied:
@@ -40,9 +42,12 @@ class NetworkManager: ObservableObject {
                     // Wi-Fi interface not found
                     self.wifiStatus = .notSupported
                 }
-                
+
                 // MARK: - Ethernet
-                if path.availableInterfaces.contains(where: { $0.type == .wiredEthernet }) {
+
+                if path.availableInterfaces.contains(where: {
+                    $0.type == .wiredEthernet
+                }) {
                     if path.usesInterfaceType(.wiredEthernet) {
                         switch path.status {
                         case .satisfied:
@@ -71,7 +76,6 @@ class NetworkManager: ObservableObject {
     }
 }
 
-/// A simple enum for network states.
 enum NetworkState {
     case connected
     case connectedWithoutInternet
