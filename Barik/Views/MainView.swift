@@ -14,7 +14,8 @@ struct MainView: View {
     }
 
     // MARK: - Menu Bar
-    private var menuBar: some View {
+
+    fileprivate var menuBar: some View {
         ZStack {
             HStack(spacing: 0) {
                 Spacer().frame(width: 25)
@@ -42,8 +43,13 @@ struct MainView: View {
                 Spacer().frame(width: 25)
             }
             .foregroundStyle(Color.foregroundOutside)
-
         }
         .frame(height: 55)
+    }
+}
+
+struct MenuBar_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView().menuBar.background(.black)
     }
 }
