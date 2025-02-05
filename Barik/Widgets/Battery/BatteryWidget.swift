@@ -5,6 +5,7 @@ struct BatteryWidget: View {
     @StateObject private var batteryManager = BatteryManager()
     private var level: Int { batteryManager.batteryLevel }
     private var isCharging: Bool { batteryManager.isCharging }
+    private var isPluggedIn: Bool { batteryManager.isPluggedIn }
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -22,8 +23,10 @@ struct BatteryWidget: View {
                     )
                 )
                 .foregroundStyle(batteryColor)
-            BatteryText(level: level, isCharging: isCharging)
-                .foregroundStyle(batteryTextColor)
+            BatteryText(
+                level: level, isCharging: isCharging, isPluggedIn: isPluggedIn
+            )
+            .foregroundStyle(batteryTextColor)
         }
         .frame(width: 30, height: 10)
     }
@@ -55,6 +58,7 @@ struct BatteryWidget: View {
 private struct BatteryText: View {
     let level: Int
     let isCharging: Bool
+    let isPluggedIn: Bool
 
     var body: some View {
         HStack(alignment: .center, spacing: -1) {
@@ -64,6 +68,13 @@ private struct BatteryText: View {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 8))
                     .transition(.blurReplace)
+            }
+
+            if !isCharging && isPluggedIn && level != 100 {
+                Image(systemName: "powerplug.portrait.fill")
+                    .font(.system(size: 8))
+                    .transition(.blurReplace)
+                    .padding(.leading, 1)
             }
         }
         .fontWeight(.semibold)
