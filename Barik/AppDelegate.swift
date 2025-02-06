@@ -1,39 +1,56 @@
-import Combine
 import SwiftUI
 
-/// This class creates the main window.
 class AppDelegate: NSObject, NSApplicationDelegate {
-    var window: NonFocusableWindow!
-
     func applicationDidFinishLaunching(_ notification: Notification) {
-        configureActivationPolicy()
-        setupWindow()
-        window.orderFront(nil)
+        setupAndShowBackground()
+        setupAndShowMenuBar()
     }
-
-    private func configureActivationPolicy() {
-        NSApp.setActivationPolicy(.accessory)
-    }
-
-    private func setupWindow() {
+    
+    private func setupAndShowBackground() {
         guard let screen = NSScreen.main?.visibleFrame else { return }
-        let windowFrame = NSRect(
+        let panelFrame = NSRect(
             x: 0, y: 0, width: screen.size.width, height: screen.size.height)
-
-        window = NonFocusableWindow(
-            contentRect: windowFrame,
-            styleMask: [.borderless, .fullSizeContentView],
+        
+        let panel = NSPanel(
+            contentRect: panelFrame,
+            styleMask: [
+                .nonactivatingPanel,
+            ],
             backing: .buffered,
-            defer: false)
-
-        window.level = NSWindow.Level(
+            defer: false
+        )
+        
+        panel.level = NSWindow.Level(
             rawValue: Int(CGWindowLevelForKey(.desktopWindow)))
-        window.backgroundColor = .clear
-        window.hasShadow = false
-        window.collectionBehavior = [.canJoinAllSpaces]
-        window.ignoresMouseEvents = false
-        window.acceptsMouseMovedEvents = true
-
-        window.contentView = NSHostingView(rootView: MainView())
+        panel.backgroundColor = .clear
+        panel.hasShadow = false
+        panel.collectionBehavior = [.canJoinAllSpaces]
+        panel.contentView = NSHostingView(rootView: BackgroundView())
+        
+        panel.orderFront(nil)
+    }
+    
+    private func setupAndShowMenuBar() {
+        guard let screen = NSScreen.main?.visibleFrame else { return }
+        let panelFrame = NSRect(
+            x: 0, y: 0, width: screen.size.width, height: screen.size.height)
+        
+        let panel = NSPanel(
+            contentRect: panelFrame,
+            styleMask: [
+                .nonactivatingPanel,
+            ],
+            backing: .buffered,
+            defer: false
+        )
+        
+        panel.level = NSWindow.Level(
+            rawValue: Int(CGWindowLevelForKey(.backstopMenu)))
+        panel.backgroundColor = .clear
+        panel.hasShadow = false
+        panel.collectionBehavior = [.canJoinAllSpaces]
+        panel.contentView = NSHostingView(rootView: MenuBarView())
+        
+        panel.orderFront(nil)
     }
 }
