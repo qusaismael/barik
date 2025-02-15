@@ -7,7 +7,7 @@ struct MenuBarView: View {
         ZStack {
             HStack(spacing: 0) {
                 Spacer().frame(width: 25)
-                SpaceIndicatorWidget()
+                SpacesWidget()
                 Spacer()
             }
 

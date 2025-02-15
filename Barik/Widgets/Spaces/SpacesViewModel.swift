@@ -2,7 +2,7 @@ import AppKit
 import Combine
 import Foundation
 
-class SpaceViewModel: ObservableObject {
+class SpacesViewModel: ObservableObject {
     @Published var spaces: [AnySpace] = []
     private var timer: Timer?
     private var provider: AnySpacesProvider?

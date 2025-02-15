@@ -1,7 +1,7 @@
 import SwiftUICore
 
-struct SpaceIndicatorWidget: View {
-    @ObservedObject var viewModel = SpaceViewModel()
+struct SpacesWidget: View {
+    @ObservedObject var viewModel = SpacesViewModel()
 
     var body: some View {
         HStack(spacing: 8) {
