@@ -53,7 +53,7 @@ class YabaiSpacesProvider: SpacesProvider {
     }
 
     func getSpacesWithWindows() -> [YabaiSpace]? {
-        guard var spaces = fetchSpaces(), let windows = fetchWindows() else {
+        guard let spaces = fetchSpaces(), let windows = fetchWindows() else {
             return nil
         }
         let filteredWindows = windows.filter {
