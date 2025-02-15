@@ -2,17 +2,28 @@ import EventKit
 import SwiftUI
 
 struct TimeWidget: View {
+    @EnvironmentObject var configProvider: ConfigProvider
+    var config: ConfigData { configProvider.config }
+    var calendarConfig: ConfigData? { config["calendar"]?.dictionaryValue }
+    
+    var format: String { config["format"]?.stringValue ?? "E d, J:mm" }
+    var timeZone: String? { config["time-zone"]?.stringValue }
+    
+    var calendarFormat: String { calendarConfig?["format"]?.stringValue ?? "J:mm" }
+    var calendarShowEvents: Bool { calendarConfig?["show-events"]?.boolValue ?? true }
+    
+    
     @State private var currentTime = Date()
-    @StateObject private var calendarManager = CalendarManager()
+    @StateObject var calendarManager: CalendarManager
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common)
         .autoconnect()
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
-            Text(formattedTime)
+            Text(formattedTime(pattern: format, from: currentTime))
                 .fontWeight(.semibold)
-            if let event = calendarManager.nextEvent {
+            if let event = calendarManager.nextEvent, calendarShowEvents {
                 Text(eventText(for: event))
                     .opacity(0.8)
                     .font(.subheadline)
@@ -24,11 +35,18 @@ struct TimeWidget: View {
         }
     }
 
-    // Format the current time.
-    private var formattedTime: String {
+    private func formattedTime(pattern: String, from time: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "E d, h:mm"
-        return formatter.string(from: currentTime)
+        formatter.setLocalizedDateFormatFromTemplate(pattern)
+        
+        if let timeZone = timeZone,
+           let tz = TimeZone(identifier: timeZone) {
+            formatter.timeZone = tz
+        } else {
+            formatter.timeZone = TimeZone.current
+        }
+        
+        return formatter.string(from: time)
     }
 
     // Create text for the calendar event.
@@ -36,9 +54,7 @@ struct TimeWidget: View {
         var text = event.title ?? ""
         if !event.isAllDay {
             text += " ("
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm"
-            text += formatter.string(from: event.startDate)
+            text += formattedTime(pattern: calendarFormat, from: event.startDate)
             text += ")"
         }
         return text
@@ -47,8 +63,10 @@ struct TimeWidget: View {
 
 struct TimeWidget_Previews: PreviewProvider {
     static var previews: some View {
+        let configProvider = ConfigProvider(config: [:])
         ZStack {
-            TimeWidget()
+            TimeWidget(calendarManager: CalendarManager(configProvider: configProvider))
+                .environmentObject(ConfigProvider(config: [:]))
         }.frame(width: 500, height: 100)
     }
 }

@@ -1,7 +1,12 @@
 import SwiftUI
 
-/// This view shows the battery status.
 struct BatteryWidget: View {
+    @EnvironmentObject var configProvider: ConfigProvider
+    var config: ConfigData { configProvider.config }
+    var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
+    var warningLevel: Int { config["warning-level"]?.intValue ?? 20 }
+    var criticalLevel: Int { config["critical-level"]?.intValue ?? 10 }
+    
     @StateObject private var batteryManager = BatteryManager()
     private var level: Int { batteryManager.batteryLevel }
     private var isCharging: Bool { batteryManager.isCharging }
@@ -9,15 +14,15 @@ struct BatteryWidget: View {
 
     var body: some View {
         ZStack(alignment: .leading) {
-            BatteryBodyView()
-                .opacity(0.3)
-            BatteryBodyView()
+            BatteryBodyView(mask: false)
+                .opacity(showPercentage ? 0.3 : 0.4)
+            BatteryBodyView(mask: true)
                 .clipShape(
                     Rectangle().path(
                         in: CGRect(
-                            x: 0,
+                            x: showPercentage ? 0 : 2,
                             y: 0,
-                            width: 30 * Int(level) / 110,
+                            width: 30 * Int(level) / (showPercentage ? 110 : 130),
                             height: .bitWidth
                         )
                     )
@@ -35,7 +40,7 @@ struct BatteryWidget: View {
         if isCharging {
             return .foregroundOutsideInvert
         } else {
-            return level > 20 ? .foregroundOutsideInvert : .black
+            return level > warningLevel ? .foregroundOutsideInvert : .black
         }
     }
 
@@ -43,9 +48,9 @@ struct BatteryWidget: View {
         if isCharging {
             return .green
         } else {
-            if level <= 10 {
+            if level <= criticalLevel {
                 return .red
-            } else if level <= 20 {
+            } else if level <= warningLevel {
                 return .yellow
             } else {
                 return .icon
@@ -54,47 +59,63 @@ struct BatteryWidget: View {
     }
 }
 
-/// This view shows the battery text and the charging icon.
 private struct BatteryText: View {
+    @EnvironmentObject var configProvider: ConfigProvider
+    var config: ConfigData { configProvider.config }
+    var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
+    
     let level: Int
     let isCharging: Bool
     let isPluggedIn: Bool
 
     var body: some View {
         HStack(alignment: .center, spacing: -1) {
-            Text("\(level)")
-                .font(.system(size: 12))
+            if showPercentage {
+                Text("\(level)")
+                    .font(.system(size: 12))
+                .transition(.blurReplace)
+            }
+            
             if isCharging && level != 100 {
                 Image(systemName: "bolt.fill")
-                    .font(.system(size: 8))
-                    .transition(.blurReplace)
+                    .font(.system(size: showPercentage ? 8 : 10))
             }
 
             if !isCharging && isPluggedIn && level != 100 {
                 Image(systemName: "powerplug.portrait.fill")
                     .font(.system(size: 8))
-                    .transition(.blurReplace)
                     .padding(.leading, 1)
             }
         }
+        .foregroundStyle(showPercentage ? .foregroundOutsideInvert : .foregroundOutside)
         .fontWeight(.semibold)
+        .transition(.blurReplace)
         .animation(.smooth, value: isCharging)
-        .frame(width: 26)
+        .frame(width: 26, height: 15)
     }
 }
 
-/// This view draws the battery body.
 private struct BatteryBodyView: View {
+    let mask: Bool
+    
+    @EnvironmentObject var configProvider: ConfigProvider
+    var config: ConfigData { configProvider.config }
+    var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
+    
     var body: some View {
         ZStack {
-            Image(systemName: "battery.0")
-                .resizable()
-                .scaledToFit()
-            Rectangle()
-                .clipShape(RoundedRectangle(cornerRadius: 2))
-                .padding(.horizontal, 3)
-                .padding(.vertical, 2)
-                .offset(x: -2)
+            if showPercentage || !mask {
+                Image(systemName: "battery.0")
+                    .resizable()
+                    .scaledToFit()
+            }
+            if showPercentage || mask {
+                Rectangle()
+                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .padding(.horizontal, showPercentage ? 3 : 4.4)
+                    .padding(.vertical, showPercentage ? 2 : 3.5)
+                    .offset(x: showPercentage ? -2 : -1.77, y: showPercentage ? 0 : 0.2 )
+            }
         }
         .compositingGroup()
     }
@@ -106,5 +127,6 @@ struct BatteryWidget_Previews: PreviewProvider {
             BatteryWidget()
         }.frame(width: 200, height: 100)
             .background(.yellow)
+            .environmentObject(ConfigProvider(config: [:]))
     }
 }

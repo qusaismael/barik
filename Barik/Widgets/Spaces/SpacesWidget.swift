@@ -1,7 +1,7 @@
 import SwiftUICore
 
 struct SpacesWidget: View {
-    @ObservedObject var viewModel = SpacesViewModel()
+    @StateObject var viewModel = SpacesViewModel()
 
     var body: some View {
         HStack(spacing: 8) {
@@ -42,11 +42,19 @@ private struct SpaceView: View {
 
 /// This view shows a window and its icon.
 private struct WindowView: View {
+    @EnvironmentObject var configProvider: ConfigProvider
+    var config: ConfigData { configProvider.config }
+    var windowConfig: ConfigData { config["window"]?.dictionaryValue ?? [:] }
+    var titleConfig: ConfigData { windowConfig["title"]?.dictionaryValue ?? [:] }
+    
+    var maxLength: Int { titleConfig["max-length"]?.intValue ?? 50 }
+    
+    
     let window: AnyWindow
     let space: AnySpace
 
     var body: some View {
-        let titleMaxLength = 50
+        let titleMaxLength = maxLength
         let size: CGFloat = 21
         let sameAppCount = space.windows.filter { $0.appName == window.appName }
             .count

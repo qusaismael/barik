@@ -1,43 +1,63 @@
-import AppKit
-import EventKit
 import SwiftUI
 
 struct MenuBarView: View {
+    @ObservedObject var configManager = ConfigManager.shared
+
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                Spacer().frame(width: 25)
-                SpacesWidget()
-                Spacer()
-            }
-
-            HStack(spacing: 0) {
-                Spacer()
-                HStack(spacing: 15) {
-                    NetworkWidget()
-                    BatteryWidget()
-                }
-                .shadow(color: .shadow, radius: 3)
-                .font(.system(size: 16))
-
-                Spacer().frame(width: 15)
-                Rectangle()
-                    .fill(Color.active)
-                    .frame(width: 2, height: 15)
-                    .clipShape(Capsule())
-                
-                    Spacer().frame(width: 15)
-                    TimeWidget()
-                    Spacer().frame(width: 25)
-            }
-            .foregroundStyle(Color.foregroundOutside)
+        let theme: ColorScheme? = switch(configManager.config.rootToml.theme) {
+            case "dark":
+                .dark
+            case "light":
+                .light
+            default:
+                .none
         }
+        
+        let items = configManager.config.rootToml.widgets.displayed
+        
+        HStack(spacing: 15) {
+            ForEach(0..<items.count, id: \.self) { index in
+                let item = items[index]
+                buildView(for: item)
+            }
+            
+        }
+        .foregroundStyle(Color.foregroundOutside)
         .frame(height: 55)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 25)
+        .preferredColorScheme(theme)
     }
-}
 
-struct MenuBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuBarView().background(.black)
+    @ViewBuilder
+    private func buildView(for item: TomlWidgetItem) -> some View {
+        let config = ConfigProvider(config: configManager.resolvedWidgetConfig(for: item))
+        
+        switch item.id {
+        case "default.spaces":
+            SpacesWidget().environmentObject(config)
+
+        case "default.network":
+            NetworkWidget().environmentObject(config)
+
+        case "default.battery":
+            BatteryWidget().environmentObject(config)
+
+        case "default.time":
+            TimeWidget(calendarManager: CalendarManager(configProvider: config))
+                .environmentObject(config)
+
+        case "spacer":
+                Spacer().frame(minWidth: 50, maxWidth: .infinity)
+
+        case "divider":
+            Rectangle()
+                .fill(Color.active)
+                .frame(width: 2, height: 15)
+                .clipShape(Capsule())
+
+        default:
+            Text("?\(item.id)?").foregroundColor(.red)
+        }
     }
 }

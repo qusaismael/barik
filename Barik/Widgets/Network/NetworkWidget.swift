@@ -13,7 +13,7 @@ struct NetworkWidget: View {
             if networkManager.ethernetStatus != .notSupported {
                 ethernetIcon
             }
-        }
+        }.font(.system(size: 15))
     }
 
     /// View for Wi-Fi icon based on current state.
@@ -64,5 +64,6 @@ struct NetworkWidget_Previews: PreviewProvider {
         NetworkWidget()
             .frame(width: 200, height: 100)
             .background(.black)
+            .environmentObject(ConfigProvider(config: [:]))
     }
 }
