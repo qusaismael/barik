@@ -83,6 +83,12 @@ calendar.show-events = true
 
 Currently, you can customize the order of widgets (time, indicators, etc.) and adjust some of their settings. Soon, you’ll also be able to add custom widgets and completely change **barik**'s appearance—making it almost unrecognizable (hello, r/unixporn!).
 
+## Future Plans
+
+I'm not planning to stick to minimal functionality—exciting new features are coming soon! The roadmap includes full style customization, the ability to create custom widgets or extend existing ones, and a public **Store** where you can share your styles and widgets.
+
+And very soon, I'll introduce a new way to use barik — **Popup** ([#24](https://github.com/mocki-toki/barik/issues/24)). Stay tuned! 🚀
+
 ## Why Aren't the Space Indicators Clickable?
 
 [#7](https://github.com/mocki-toki/barik/issues/7)
