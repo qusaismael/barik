@@ -86,16 +86,16 @@ struct WidgetsSection: Decodable {
 
     func config(for widgetId: String) -> ConfigData? {
         let keys = widgetId.split(separator: ".").map { String($0) }
-        
+
         var current: Any? = others
-        
+
         for key in keys {
             guard let dict = current as? [String: Any] else {
                 return nil
             }
             current = dict[key]
         }
-        
+
         return (current as? TOMLValue)?.dictionaryValue as? ConfigData
     }
 }

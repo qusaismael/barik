@@ -5,14 +5,17 @@ struct TimeWidget: View {
     @EnvironmentObject var configProvider: ConfigProvider
     var config: ConfigData { configProvider.config }
     var calendarConfig: ConfigData? { config["calendar"]?.dictionaryValue }
-    
+
     var format: String { config["format"]?.stringValue ?? "E d, J:mm" }
     var timeZone: String? { config["time-zone"]?.stringValue }
-    
-    var calendarFormat: String { calendarConfig?["format"]?.stringValue ?? "J:mm" }
-    var calendarShowEvents: Bool { calendarConfig?["show-events"]?.boolValue ?? true }
-    
-    
+
+    var calendarFormat: String {
+        calendarConfig?["format"]?.stringValue ?? "J:mm"
+    }
+    var calendarShowEvents: Bool {
+        calendarConfig?["show-events"]?.boolValue ?? true
+    }
+
     @State private var currentTime = Date()
     @StateObject var calendarManager: CalendarManager
 
@@ -38,14 +41,15 @@ struct TimeWidget: View {
     private func formattedTime(pattern: String, from time: Date) -> String {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate(pattern)
-        
+
         if let timeZone = timeZone,
-           let tz = TimeZone(identifier: timeZone) {
+            let tz = TimeZone(identifier: timeZone)
+        {
             formatter.timeZone = tz
         } else {
             formatter.timeZone = TimeZone.current
         }
-        
+
         return formatter.string(from: time)
     }
 
@@ -54,7 +58,8 @@ struct TimeWidget: View {
         var text = event.title ?? ""
         if !event.isAllDay {
             text += " ("
-            text += formattedTime(pattern: calendarFormat, from: event.startDate)
+            text += formattedTime(
+                pattern: calendarFormat, from: event.startDate)
             text += ")"
         }
         return text
@@ -65,8 +70,10 @@ struct TimeWidget_Previews: PreviewProvider {
     static var previews: some View {
         let configProvider = ConfigProvider(config: [:])
         ZStack {
-            TimeWidget(calendarManager: CalendarManager(configProvider: configProvider))
-                .environmentObject(ConfigProvider(config: [:]))
+            TimeWidget(
+                calendarManager: CalendarManager(configProvider: configProvider)
+            )
+            .environmentObject(ConfigProvider(config: [:]))
         }.frame(width: 500, height: 100)
     }
 }

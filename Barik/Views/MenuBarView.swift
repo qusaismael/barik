@@ -4,23 +4,24 @@ struct MenuBarView: View {
     @ObservedObject var configManager = ConfigManager.shared
 
     var body: some View {
-        let theme: ColorScheme? = switch(configManager.config.rootToml.theme) {
+        let theme: ColorScheme? =
+            switch configManager.config.rootToml.theme {
             case "dark":
                 .dark
             case "light":
                 .light
             default:
                 .none
-        }
-        
+            }
+
         let items = configManager.config.rootToml.widgets.displayed
-        
+
         HStack(spacing: 15) {
             ForEach(0..<items.count, id: \.self) { index in
                 let item = items[index]
                 buildView(for: item)
             }
-            
+
         }
         .foregroundStyle(Color.foregroundOutside)
         .frame(height: 55)
@@ -31,8 +32,9 @@ struct MenuBarView: View {
 
     @ViewBuilder
     private func buildView(for item: TomlWidgetItem) -> some View {
-        let config = ConfigProvider(config: configManager.resolvedWidgetConfig(for: item))
-        
+        let config = ConfigProvider(
+            config: configManager.resolvedWidgetConfig(for: item))
+
         switch item.id {
         case "default.spaces":
             SpacesWidget().environmentObject(config)
@@ -48,7 +50,7 @@ struct MenuBarView: View {
                 .environmentObject(config)
 
         case "spacer":
-                Spacer().frame(minWidth: 50, maxWidth: .infinity)
+            Spacer().frame(minWidth: 50, maxWidth: .infinity)
 
         case "divider":
             Rectangle()

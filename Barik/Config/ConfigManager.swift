@@ -1,5 +1,5 @@
-import SwiftUI
 import Foundation
+import SwiftUI
 import TOMLDecoder
 
 final class ConfigManager: ObservableObject {
@@ -56,44 +56,48 @@ final class ConfigManager: ObservableObject {
 
     private func createDefaultConfig(at path: String) throws {
         let defaultTOML = """
-        theme = "system" # system, light, dark
+            theme = "system" # system, light, dark
 
-        [widgets]
-        displayed = [ # widgets on menu bar
-        "default.spaces",
-        "spacer",
-        "default.network",
-        "default.battery",
-        "divider",
-        # { "default.time" = { time-zone = "America/Los_Angeles", format = "E d, hh:mm" } },
-        "default.time"
-        ]
+            [widgets]
+            displayed = [ # widgets on menu bar
+            "default.spaces",
+            "spacer",
+            "default.network",
+            "default.battery",
+            "divider",
+            # { "default.time" = { time-zone = "America/Los_Angeles", format = "E d, hh:mm" } },
+            "default.time"
+            ]
 
-        [widgets.default.spaces]
-        window.title.max-length = 50
+            [widgets.default.spaces]
+            window.title.max-length = 50
 
-        [widgets.default.battery]
-        show-percentage = true
-        warning-level = 30
-        critical-level = 10
+            [widgets.default.battery]
+            show-percentage = true
+            warning-level = 30
+            critical-level = 10
 
-        [widgets.default.time]
-        format = "E d, J:mm"
-        calendar.format = "J:mm"
+            [widgets.default.time]
+            format = "E d, J:mm"
+            calendar.format = "J:mm"
 
-        calendar.show-events = true
-        # calendar.allow-list = ["Home", "Personal"] # show only these calendars
-        # calendar.deny-list = ["Work", "Boss"] # show all calendars except these
-        """
+            calendar.show-events = true
+            # calendar.allow-list = ["Home", "Personal"] # show only these calendars
+            # calendar.deny-list = ["Work", "Boss"] # show all calendars except these
+            """
         try defaultTOML.write(toFile: path, atomically: true, encoding: .utf8)
     }
 
     private func startWatchingFile(at path: String) {
         fileDescriptor = open(path, O_EVTONLY)
         if fileDescriptor == -1 { return }
-        fileWatchSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fileDescriptor, eventMask: .write, queue: DispatchQueue.global())
+        fileWatchSource = DispatchSource.makeFileSystemObjectSource(
+            fileDescriptor: fileDescriptor, eventMask: .write,
+            queue: DispatchQueue.global())
         fileWatchSource?.setEventHandler { [weak self] in
-            guard let self = self, let path = self.configFilePath else { return }
+            guard let self = self, let path = self.configFilePath else {
+                return
+            }
             self.parseConfigFile(at: path)
         }
         fileWatchSource?.setCancelHandler { [weak self] in

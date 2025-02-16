@@ -45,11 +45,12 @@ private struct WindowView: View {
     @EnvironmentObject var configProvider: ConfigProvider
     var config: ConfigData { configProvider.config }
     var windowConfig: ConfigData { config["window"]?.dictionaryValue ?? [:] }
-    var titleConfig: ConfigData { windowConfig["title"]?.dictionaryValue ?? [:] }
-    
+    var titleConfig: ConfigData {
+        windowConfig["title"]?.dictionaryValue ?? [:]
+    }
+
     var maxLength: Int { titleConfig["max-length"]?.intValue ?? 50 }
-    
-    
+
     let window: AnyWindow
     let space: AnySpace
 

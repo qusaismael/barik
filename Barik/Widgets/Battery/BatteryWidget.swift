@@ -6,7 +6,7 @@ struct BatteryWidget: View {
     var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
     var warningLevel: Int { config["warning-level"]?.intValue ?? 20 }
     var criticalLevel: Int { config["critical-level"]?.intValue ?? 10 }
-    
+
     @StateObject private var batteryManager = BatteryManager()
     private var level: Int { batteryManager.batteryLevel }
     private var isCharging: Bool { batteryManager.isCharging }
@@ -22,7 +22,8 @@ struct BatteryWidget: View {
                         in: CGRect(
                             x: showPercentage ? 0 : 2,
                             y: 0,
-                            width: 30 * Int(level) / (showPercentage ? 110 : 130),
+                            width: 30 * Int(level)
+                                / (showPercentage ? 110 : 130),
                             height: .bitWidth
                         )
                     )
@@ -63,7 +64,7 @@ private struct BatteryText: View {
     @EnvironmentObject var configProvider: ConfigProvider
     var config: ConfigData { configProvider.config }
     var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
-    
+
     let level: Int
     let isCharging: Bool
     let isPluggedIn: Bool
@@ -73,9 +74,9 @@ private struct BatteryText: View {
             if showPercentage {
                 Text("\(level)")
                     .font(.system(size: 12))
-                .transition(.blurReplace)
+                    .transition(.blurReplace)
             }
-            
+
             if isCharging && level != 100 {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: showPercentage ? 8 : 10))
@@ -87,7 +88,9 @@ private struct BatteryText: View {
                     .padding(.leading, 1)
             }
         }
-        .foregroundStyle(showPercentage ? .foregroundOutsideInvert : .foregroundOutside)
+        .foregroundStyle(
+            showPercentage ? .foregroundOutsideInvert : .foregroundOutside
+        )
         .fontWeight(.semibold)
         .transition(.blurReplace)
         .animation(.smooth, value: isCharging)
@@ -97,11 +100,11 @@ private struct BatteryText: View {
 
 private struct BatteryBodyView: View {
     let mask: Bool
-    
+
     @EnvironmentObject var configProvider: ConfigProvider
     var config: ConfigData { configProvider.config }
     var showPercentage: Bool { config["show-percentage"]?.boolValue ?? true }
-    
+
     var body: some View {
         ZStack {
             if showPercentage || !mask {
@@ -114,7 +117,9 @@ private struct BatteryBodyView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 2))
                     .padding(.horizontal, showPercentage ? 3 : 4.4)
                     .padding(.vertical, showPercentage ? 2 : 3.5)
-                    .offset(x: showPercentage ? -2 : -1.77, y: showPercentage ? 0 : 0.2 )
+                    .offset(
+                        x: showPercentage ? -2 : -1.77,
+                        y: showPercentage ? 0 : 0.2)
             }
         }
         .compositingGroup()
