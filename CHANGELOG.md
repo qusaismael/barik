@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- Added support for `~/.barik-config.toml` configuration file
+- Added AeroSpace support 🎉
+- Fixed 24-hour time
+- Fixed desktop icons display issue
+
 ## 0.3.0
 
 - Added network (wifi/ethernet status) widget
