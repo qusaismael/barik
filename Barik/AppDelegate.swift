@@ -7,15 +7,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupAndShowBackground() {
-        guard let screen = NSScreen.main?.visibleFrame else { return }
+        guard let screen = NSScreen.main?.frame else { return }
         let panelFrame = NSRect(
             x: 0, y: 0, width: screen.size.width, height: screen.size.height)
 
         let panel = NSPanel(
             contentRect: panelFrame,
-            styleMask: [
-                .nonactivatingPanel
-            ],
+            styleMask: [.nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
@@ -31,15 +29,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupAndShowMenuBar() {
-        guard let screen = NSScreen.main?.visibleFrame else { return }
+        guard let screen = NSScreen.main?.frame else { return }
         let panelFrame = NSRect(
             x: 0, y: 0, width: screen.size.width, height: screen.size.height)
 
         let panel = NSPanel(
             contentRect: panelFrame,
-            styleMask: [
-                .nonactivatingPanel
-            ],
+            styleMask: [.nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
