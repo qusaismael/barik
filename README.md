@@ -38,10 +38,20 @@
 
 ## Quick Start
 
-1. Download **barik** from [Releases](https://github.com/mocki-toki/barik/releases), unzip it, and move it to your Applications folder.
+1. Install **barik** via [Homebrew](https://brew.sh/)
+
+```sh
+brew install --cask mocki-toki/formulae/barik
+```
+
+Or you can download from [Releases](https://github.com/mocki-toki/barik/releases), unzip it, and move it to your Applications folder.
+
 2. _(Optional)_ To display open applications and spaces, install [**yabai**](https://github.com/koekeishiya/yabai) or [**AeroSpace**](https://github.com/nikitabobko/AeroSpace) and set up hotkeys. For **yabai**, you'll need **skhd** or **Raycast scripts**. Don't forget to configure **top padding** — [here's an example for **yabai**](https://github.com/mocki-toki/barik/blob/main/example/.yabairc).
+
 3. Hide the system menu bar in **System Settings** and uncheck **Desktop & Dock → Show items → On Desktop**.
+
 4. Launch **barik** from the Applications folder.
+
 5. Add **barik** to your login items for automatic startup.
 
 **That's it!** Try switching spaces and see the panel in action.
