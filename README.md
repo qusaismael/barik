@@ -97,7 +97,9 @@ Currently, you can customize the order of widgets (time, indicators, etc.) and a
 
 I'm not planning to stick to minimal functionality—exciting new features are coming soon! The roadmap includes full style customization, the ability to create custom widgets or extend existing ones, and a public **Store** where you can share your styles and widgets.
 
-And very soon, I'll introduce a new way to use barik — **Popup** ([#24](https://github.com/mocki-toki/barik/issues/24)). Stay tuned! 🚀
+Soon, you'll also be able to place widgets not just at the top, but at the bottom, left, and right as well. This means you can replace not only the menu bar but also the Dock! 🚀
+
+And very soon, I'll introduce a new way to use barik — **Popup** ([#24](https://github.com/mocki-toki/barik/issues/24)). Stay tuned!
 
 ## Why Aren't the Space Indicators Clickable?
 
