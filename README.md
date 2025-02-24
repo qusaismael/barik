@@ -118,6 +118,8 @@ Soon, you'll also be able to place widgets not just at the top, but at the botto
 ## What to do if the currently playing song is not displayed in the Now Playing widget?
 
 Unfortunately, macOS does not support access to its API that allows music control. Fortunately, there is a workaround using Apple Script or a service API, but this requires additional work to integrate each service. Currently, the Now Playing widget supports the following services:
+1.	Spotify (requires the desktop application)
+2.	Apple Music (requires the desktop application)
 
 Create an issue so we can add your favorite music service: https://github.com/mocki-toki/barik/issues/new
 
