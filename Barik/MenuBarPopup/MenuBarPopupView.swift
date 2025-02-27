@@ -109,7 +109,8 @@ struct MenuBarPopupView<Content: View>: View {
                     .smooth(duration: 0.3), value: animated ? 0 : computedOffset
                 )
                 .animation(
-                    .smooth(duration: 0.3), value: animated ? 0 : computedYOffset
+                    .smooth(duration: 0.3),
+                    value: animated ? 0 : computedYOffset
                 )
         }
         .background(
@@ -126,7 +127,9 @@ struct MenuBarPopupView<Content: View>: View {
                         contentHeight = geometry.size.height
                     }
             }
-        ).foregroundStyle(.white)
+        )
+        .foregroundStyle(.white)
+        .preferredColorScheme(.dark)
     }
 
     var computedOffset: CGFloat {

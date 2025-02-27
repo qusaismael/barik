@@ -67,8 +67,9 @@ private struct NowPlayingVerticalPopup: View {
                 )
                 .animation(.smooth(duration: 0.5, extraBounce: 0.4), value: song.state == .paused)
 
-                VStack(alignment: .center, spacing: 0) {
+                VStack(alignment: .center) {
                     Text(song.title)
+                        .multilineTextAlignment(.center)
                         .font(.system(size: 15))
                         .fontWeight(.medium)
                     Text(song.artist)
@@ -145,7 +146,7 @@ struct NowPlayingHorizontalPopup: View {
                             .fontWeight(.light)
                     }
                     .padding(.trailing, 8)
-                    Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 HStack {

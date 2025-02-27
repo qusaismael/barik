@@ -39,7 +39,7 @@ struct NetworkPopup: View {
                 }
             }
         }
-        .padding(30)
+        .padding(25)
         .background(Color.black)
     }
 

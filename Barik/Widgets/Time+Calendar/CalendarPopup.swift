@@ -80,10 +80,18 @@ struct CalendarVerticalPopup: View {
                 currentYear: currentYear,
                 currentMonth: currentMonth
             )
-            EventListView(
-                todaysEvents: calendarManager.todaysEvents,
-                tomorrowsEvents: calendarManager.tomorrowsEvents
-            )
+            
+            Group {
+                if calendarManager.todaysEvents.isEmpty && calendarManager.tomorrowsEvents.isEmpty {
+                    Text(NSLocalizedString("EMPTY_EVENTS", comment: ""))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .font(.callout)
+                }
+                EventListView(
+                    todaysEvents: calendarManager.todaysEvents,
+                    tomorrowsEvents: calendarManager.tomorrowsEvents
+                )
+            }
             .frame(width: 255)
             .padding(.top, 20)
         }
@@ -115,10 +123,18 @@ struct CalendarHorizontalPopup: View {
                     currentMonth: currentMonth
                 )
             }
-            EventListView(
-                todaysEvents: calendarManager.todaysEvents,
-                tomorrowsEvents: calendarManager.tomorrowsEvents
-            )
+            
+            Group {
+                if calendarManager.todaysEvents.isEmpty && calendarManager.tomorrowsEvents.isEmpty {
+                    Text(NSLocalizedString("EMPTY_EVENTS", comment: ""))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.callout)
+                }
+                EventListView(
+                    todaysEvents: calendarManager.todaysEvents,
+                    tomorrowsEvents: calendarManager.tomorrowsEvents
+                )
+            }
             .frame(width: 255)
             .padding(.leading, 30)
         }
@@ -270,11 +286,7 @@ private struct EventListView: View {
     let tomorrowsEvents: [EKEvent]
 
     var body: some View {
-        if todaysEvents.isEmpty && tomorrowsEvents.isEmpty {
-            Text(NSLocalizedString("EMPTY_EVENTS", comment: ""))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.callout)
-        } else {
+        if !todaysEvents.isEmpty || !tomorrowsEvents.isEmpty {
             VStack(spacing: 10) {
                 eventSection(
                     title: NSLocalizedString("TODAY", comment: "").uppercased(),
