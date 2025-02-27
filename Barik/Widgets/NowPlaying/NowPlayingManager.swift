@@ -20,7 +20,7 @@ struct NowPlayingSong: Equatable, Identifiable {
     let artist: String
     let albumArtURL: URL?
     let position: Double?
-    let duration: Double? // Duration in seconds
+    let duration: Double?  // Duration in seconds
 
     /// Initializes a song model from a given output string.
     /// - Parameters:
@@ -29,24 +29,32 @@ struct NowPlayingSong: Equatable, Identifiable {
     init?(application: String, from output: String) {
         let components = output.components(separatedBy: "|")
         guard components.count == 6,
-              let state = PlaybackState(rawValue: components[0]) else {
+            let state = PlaybackState(rawValue: components[0])
+        else {
             return nil
         }
         // Replace commas with dots for correct decimal conversion.
-        let positionString = components[4].replacingOccurrences(of: ",", with: ".")
-        let durationString = components[5].replacingOccurrences(of: ",", with: ".")
+        let positionString = components[4].replacingOccurrences(
+            of: ",", with: ".")
+        let durationString = components[5].replacingOccurrences(
+            of: ",", with: ".")
         guard let position = Double(positionString),
-              let durationMilliseconds = Double(durationString) else {
+            let duration = Double(durationString)
+        else {
             return nil
         }
-        
+
         self.appName = application
         self.state = state
         self.title = components[1]
         self.artist = components[2]
         self.albumArtURL = URL(string: components[3])
         self.position = position
-        self.duration = durationMilliseconds / 1000
+        if application == MusicApp.spotify.rawValue {
+            self.duration = duration / 1000
+        } else {
+            self.duration = duration
+        }
     }
 }
 
@@ -56,36 +64,64 @@ struct NowPlayingSong: Equatable, Identifiable {
 enum MusicApp: String, CaseIterable {
     case spotify = "Spotify"
     case music = "Music"
-    
+
     /// AppleScript to fetch the now playing song.
     var nowPlayingScript: String {
-        """
-        if application "\(rawValue)" is running then
-            tell application "\(rawValue)"
-                if player state is playing then
-                    set currentTrack to current track
-                    return "playing|" & (name of currentTrack) & "|" & (artist of currentTrack) & "|" & (artwork url of currentTrack) & "|" & player position & "|" & (duration of currentTrack)
-                else if player state is paused then
-                    set currentTrack to current track
-                    return "paused|" & (name of currentTrack) & "|" & (artist of currentTrack) & "|" & (artwork url of currentTrack) & "|" & player position & "|" & (duration of currentTrack)
+        if self == .music {
+            return """
+                if application "Music" is running then
+                    tell application "Music"
+                        if player state is playing or player state is paused then
+                            set currentTrack to current track
+                            try
+                                set artworkURL to (get URL of artwork 1 of currentTrack) as text
+                            on error
+                                set artworkURL to ""
+                            end try
+                            set stateText to ""
+                            if player state is playing then
+                                set stateText to "playing"
+                            else if player state is paused then
+                                set stateText to "paused"
+                            end if
+                            return stateText & "|" & (name of currentTrack) & "|" & (artist of currentTrack) & "|" & artworkURL & "|" & (player position as text) & "|" & ((duration of currentTrack) as text)
+                        else
+                            return "stopped"
+                        end if
+                    end tell
                 else
                     return "stopped"
                 end if
-            end tell
-        else
-            return "stopped"
-        end if
-        """
+                """
+        } else {
+            return """
+                if application "\(rawValue)" is running then
+                    tell application "\(rawValue)"
+                        if player state is playing then
+                            set currentTrack to current track
+                            return "playing|" & (name of currentTrack) & "|" & (artist of currentTrack) & "|" & (artwork url of currentTrack) & "|" & player position & "|" & (duration of currentTrack)
+                        else if player state is paused then
+                            set currentTrack to current track
+                            return "paused|" & (name of currentTrack) & "|" & (artist of currentTrack) & "|" & (artwork url of currentTrack) & "|" & player position & "|" & (duration of currentTrack)
+                        else
+                            return "stopped"
+                        end if
+                    end tell
+                else
+                    return "stopped"
+                end if
+                """
+        }
     }
-    
+
     var previousTrackCommand: String {
         "tell application \"\(rawValue)\" to previous track"
     }
-    
+
     var togglePlayPauseCommand: String {
         "tell application \"\(rawValue)\" to playpause"
     }
-    
+
     var nextTrackCommand: String {
         "tell application \"\(rawValue)\" to next track"
     }
@@ -95,7 +131,7 @@ enum MusicApp: String, CaseIterable {
 
 /// Provides functionality to fetch the now playing song and execute playback commands.
 final class NowPlayingProvider {
-    
+
     /// Returns the current playing song from any supported music application.
     static func fetchNowPlaying() -> NowPlayingSong? {
         for app in MusicApp.allCases {
@@ -105,39 +141,45 @@ final class NowPlayingProvider {
         }
         return nil
     }
-    
+
     /// Returns the now playing song for a specific music application.
     private static func fetchNowPlaying(from app: MusicApp) -> NowPlayingSong? {
         guard let output = runAppleScript(app.nowPlayingScript),
-              output != "stopped" else {
+            output != "stopped"
+        else {
             return nil
         }
         return NowPlayingSong(application: app.rawValue, from: output)
     }
-    
+
     /// Checks if the specified music application is currently running.
     static func isAppRunning(_ app: MusicApp) -> Bool {
-        NSWorkspace.shared.runningApplications.contains { $0.localizedName == app.rawValue }
+        NSWorkspace.shared.runningApplications.contains {
+            $0.localizedName == app.rawValue
+        }
     }
-    
+
     /// Executes the provided AppleScript and returns the trimmed result.
     @discardableResult
     static func runAppleScript(_ script: String) -> String? {
-        guard let appleScript = NSAppleScript(source: script) else { return nil }
+        guard let appleScript = NSAppleScript(source: script) else {
+            return nil
+        }
         var error: NSDictionary?
         let outputDescriptor = appleScript.executeAndReturnError(&error)
         if let error = error {
             print("AppleScript Error: \(error)")
             return nil
         }
-        return outputDescriptor.stringValue?.trimmingCharacters(in: .whitespacesAndNewlines)
+        return outputDescriptor.stringValue?.trimmingCharacters(
+            in: .whitespacesAndNewlines)
     }
-    
+
     /// Returns the first running music application.
     static func activeMusicApp() -> MusicApp? {
         MusicApp.allCases.first { isAppRunning($0) }
     }
-    
+
     /// Executes a playback command for the active music application.
     static func executeCommand(_ command: (MusicApp) -> String) {
         guard let activeApp = activeMusicApp() else { return }
@@ -150,10 +192,10 @@ final class NowPlayingProvider {
 /// An observable manager that periodically updates the now playing song.
 final class NowPlayingManager: ObservableObject {
     static let shared = NowPlayingManager()
-    
+
     @Published private(set) var nowPlaying: NowPlayingSong?
     private var cancellable: AnyCancellable?
-    
+
     private init() {
         cancellable = Timer.publish(every: 0.3, on: .main, in: .common)
             .autoconnect()
@@ -161,7 +203,7 @@ final class NowPlayingManager: ObservableObject {
                 self?.updateNowPlaying()
             }
     }
-    
+
     /// Updates the now playing song asynchronously.
     private func updateNowPlaying() {
         DispatchQueue.global(qos: .background).async {
@@ -171,17 +213,17 @@ final class NowPlayingManager: ObservableObject {
             }
         }
     }
-    
+
     /// Skips to the previous track.
     func previousTrack() {
         NowPlayingProvider.executeCommand { $0.previousTrackCommand }
     }
-    
+
     /// Toggles between play and pause.
     func togglePlayPause() {
         NowPlayingProvider.executeCommand { $0.togglePlayPauseCommand }
     }
-    
+
     /// Skips to the next track.
     func nextTrack() {
         NowPlayingProvider.executeCommand { $0.nextTrackCommand }
