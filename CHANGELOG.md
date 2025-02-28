@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.5.1
+
+> This release was supported by **ALinuxPerson** _(help with the appearance configuration, 1 issue)_, **bake** _(1 issue)_ and **Oery** _(1 issue)_
+
+- Added yabai.path and aerospace.path config properties
+- Fixed popup design
+- Fixed Apple Music integration in Now Playing widget
+- Added experimental appearance configuration:
+
+```toml
+### EXPERIMENTAL, WILL BE REPLACED BY STYLE API IN THE FUTURE
+[experimental.background] # settings for blurred background
+displayed = true          # display blurred background
+height = "default"        # available values: default (stretch to full screen), menu-bar (height like system menu bar), <float> (e.g., 40, 33.5)
+blur = 3                  # background type: from 1 to 6 for blur intensity, 7 for black color
+
+[experimental.foreground] # settings for menu bar
+height = "default"        # available values: default (55.0), menu-bar (height like system menu bar), <float> (e.g., 40, 33.5)
+horizontal-padding = 25   # padding on the left and right corners
+spacing = 15              # spacing between widgets
+
+[experimental.foreground.widgets-background] # settings for widgets background
+displayed = false                            # wrap widgets in their own background
+blur = 3                                     # background type: from 1 to 6 for blur intensity
+```
+
 ## 0.5.0
 
 ![Header](https://github.com/user-attachments/assets/182e7930-feb8-4e46-a691-7a54028d21a1)
