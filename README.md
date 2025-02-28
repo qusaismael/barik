@@ -111,6 +111,23 @@ calendar.show-events = true
 
 [widgets.default.time.popup]
 view-variant = "box"
+
+
+
+### EXPERIMENTAL, WILL BE REPLACED BY STYLE API IN THE FUTURE
+[experimental.background] # settings for blurred background
+displayed = true          # display blurred background
+height = "default"        # available values: default (stretch to full screen), menu-bar (height like system menu bar), <float> (e.g., 40, 33.5)
+blur = 3                  # background type: from 1 to 6 for blur intensity, 7 for black color
+
+[experimental.foreground] # settings for menu bar
+height = "default"        # available values: default (55.0), menu-bar (height like system menu bar), <float> (e.g., 40, 33.5)
+horizontal-padding = 25   # padding on the left and right corners
+spacing = 15              # spacing between widgets
+
+[experimental.foreground.widgets-background] # settings for widgets background
+displayed = false                            # wrap widgets in their own background
+blur = 3                                     # background type: from 1 to 6 for blur intensity
 ```
 
 Currently, you can customize the order of widgets (time, indicators, etc.) and adjust some of their settings. Soon, you’ll also be able to add custom widgets and completely change **barik**'s appearance—making it almost unrecognizable (hello, r/unixporn!).
