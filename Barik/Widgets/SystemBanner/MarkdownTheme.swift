@@ -13,6 +13,21 @@ extension Theme {
             FontSize(.em(0.85))
             BackgroundColor(.white.opacity(0.1))
         }
+        .codeBlock { configuration in
+          ScrollView(.horizontal) {
+            configuration.label
+              .fixedSize(horizontal: false, vertical: true)
+              .relativeLineSpacing(.em(0.225))
+              .markdownTextStyle {
+                FontFamilyVariant(.monospaced)
+                FontSize(.em(0.85))
+              }
+              .padding(16)
+          }
+          .background(.white.opacity(0.1))
+          .clipShape(RoundedRectangle(cornerRadius: 6))
+          .markdownMargin(top: 0, bottom: 16)
+        }
         .strong {
             FontWeight(.semibold)
             ForegroundColor(.white)
