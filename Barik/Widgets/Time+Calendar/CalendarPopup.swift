@@ -55,8 +55,7 @@ struct CalendarBoxPopup: View {
                 currentMonth: currentMonth
             )
         }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 30)
+        .padding(30)
         .fontWeight(.semibold)
         .foregroundStyle(.white)
     }
@@ -86,6 +85,7 @@ struct CalendarVerticalPopup: View {
                     Text(NSLocalizedString("EMPTY_EVENTS", comment: ""))
                         .frame(maxWidth: .infinity, alignment: .center)
                         .font(.callout)
+                        .padding(.top, 3)
                 }
                 EventListView(
                     todaysEvents: calendarManager.todaysEvents,
