@@ -4,8 +4,14 @@
     "?%@?" : {
       "shouldTranslate" : false
     },
+    "%@ GB" : {
+
+    },
     "%lld" : {
       "shouldTranslate" : false
+    },
+    "%lld%%" : {
+
     },
     "ALL_DAY" : {
       "extractionState" : "manual",
@@ -132,6 +138,9 @@
         }
       }
     },
+    "Brightness" : {
+
+    },
     "Channel: %@" : {
       "localizations" : {
         "ar" : {
@@ -255,6 +264,15 @@
           }
         }
       }
+    },
+    "CPU" : {
+
+    },
+    "CPU Usage" : {
+
+    },
+    "Download" : {
+
     },
     "EMPTY_EVENTS" : {
       "extractionState" : "manual",
@@ -505,6 +523,21 @@
         }
       }
     },
+    "Idle" : {
+
+    },
+    "Memory Usage" : {
+
+    },
+    "Microphone" : {
+
+    },
+    "Mute" : {
+
+    },
+    "Network Activity" : {
+
+    },
     "Noise: %lld" : {
       "localizations" : {
         "ar" : {
@@ -628,6 +661,9 @@
           }
         }
       }
+    },
+    "RAM" : {
+
     },
     "RSSI: %lld" : {
       "localizations" : {
@@ -876,6 +912,12 @@
           }
         }
       }
+    },
+    "System" : {
+
+    },
+    "System Monitor" : {
+
     },
     "TODAY" : {
       "extractionState" : "manual",
@@ -1127,6 +1169,9 @@
         }
       }
     },
+    "Unmute" : {
+
+    },
     "Update" : {
       "localizations" : {
         "ar" : {
@@ -1375,6 +1420,12 @@
         }
       }
     },
+    "Upload" : {
+
+    },
+    "User" : {
+
+    },
     "v%@ Changelog" : {
       "localizations" : {
         "ar" : {
@@ -1498,6 +1549,9 @@
           }
         }
       }
+    },
+    "Volume" : {
+
     },
     "What's new" : {
       "localizations" : {

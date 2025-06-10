@@ -74,6 +74,8 @@ final class ConfigManager: ObservableObject {
                 "spacer",
                 "default.network",
                 "default.battery",
+                "default.cpuram",
+                "default.networkactivity",
                 "divider",
                 # { "default.time" = { time-zone = "America/Los_Angeles", format = "E d, hh:mm" } },
                 "default.time"
@@ -93,9 +95,19 @@ final class ConfigManager: ObservableObject {
             format = "E d, J:mm"
             calendar.format = "J:mm"
 
-            calendar.show-events = true
+            calendar.show-events = false
             # calendar.allow-list = ["Home", "Personal"] # show only these calendars
             # calendar.deny-list = ["Work", "Boss"] # show all calendars except these
+
+            [widgets.default.cpuram]
+            show-icon = false
+            cpu-warning-level = 70
+            cpu-critical-level = 90
+            ram-warning-level = 70
+            ram-critical-level = 90
+
+            [widgets.default.networkactivity]
+            # No specific configuration options yet
 
             [popup.default.time]
             view-variant = "box"

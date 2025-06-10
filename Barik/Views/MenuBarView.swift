@@ -59,6 +59,18 @@ struct MenuBarView: View {
             NowPlayingWidget()
                 .environmentObject(config)
 
+        case "default.cpuram":
+            CPURAMWidget()
+                .environmentObject(config)
+
+        case "default.networkactivity":
+            NetworkActivityWidget()
+                .environmentObject(config)
+
+        case "default.volume":
+            VolumeWidget()
+                .environmentObject(config)
+
         case "spacer":
             Spacer().frame(minWidth: 50, maxWidth: .infinity)
 

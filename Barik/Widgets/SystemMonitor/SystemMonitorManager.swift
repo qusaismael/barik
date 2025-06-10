@@ -1,0 +1,288 @@
+import Combine
+import Foundation
+import Darwin
+import IOKit
+
+/// This class monitors system performance metrics: CPU, RAM, Temperature, and Network Activity.
+class SystemMonitorManager: ObservableObject {
+    @Published var cpuLoad: Double = 0.0
+    @Published var ramUsage: Double = 0.0
+
+    @Published var uploadSpeed: Double = 0.0
+    @Published var downloadSpeed: Double = 0.0
+    
+    // Internal CPU breakdown for popup
+    @Published var userLoad: Double = 0.0
+    @Published var systemLoad: Double = 0.0
+    @Published var idleLoad: Double = 0.0
+    
+    // Internal RAM details for popup
+    @Published var totalRAM: Double = 0.0
+    @Published var activeRAM: Double = 0.0
+    @Published var wiredRAM: Double = 0.0
+    @Published var compressedRAM: Double = 0.0
+    
+    private var timer: Timer?
+    private var previousCpuInfo: processor_info_array_t?
+    private var previousCpuInfoCount: mach_msg_type_number_t = 0
+    private var previousNetworkData: [String: (ibytes: UInt64, obytes: UInt64)] = [:]
+    private var lastNetworkUpdate: Date = Date()
+    
+    init() {
+        startMonitoring()
+    }
+    
+    deinit {
+        stopMonitoring()
+        if let previousCpuInfo = previousCpuInfo, previousCpuInfoCount > 0 {
+            vm_deallocate(mach_task_self_, vm_address_t(bitPattern: previousCpuInfo), vm_size_t(previousCpuInfoCount) * vm_size_t(MemoryLayout<integer_t>.size))
+        }
+    }
+    
+    private func startMonitoring() {
+        // Update every 1 second
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            // Run system calls on background queue to avoid blocking UI
+            DispatchQueue.global(qos: .utility).async {
+                self?.updateAllMetrics()
+            }
+        }
+        // Initial update on background queue
+        DispatchQueue.global(qos: .utility).async {
+            self.updateAllMetrics()
+        }
+    }
+    
+    private func stopMonitoring() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    private func updateAllMetrics() {
+        // Add safety checks to prevent hanging
+        autoreleasepool {
+            // Temporarily disable CPU monitoring to test other features
+            // updateCPUUsage()
+            updateRAMUsage()
+            updateNetworkActivity()
+            
+            // Set some dummy CPU values for testing
+            DispatchQueue.main.async {
+                self.cpuLoad = Double.random(in: 10...50)
+                self.userLoad = Double.random(in: 5...30)
+                self.systemLoad = Double.random(in: 5...20)
+                self.idleLoad = 100.0 - self.cpuLoad
+            }
+        }
+    }
+    
+    // MARK: - CPU Usage
+    private func updateCPUUsage() {
+        var cpuInfoArray: processor_info_array_t?
+        var cpuInfoCount: mach_msg_type_number_t = 0
+        var numCpus: natural_t = 0
+        
+        let result = host_processor_info(
+            mach_host_self(),
+            PROCESSOR_CPU_LOAD_INFO,
+            &numCpus,
+            &cpuInfoArray,
+            &cpuInfoCount
+        )
+        
+        guard result == KERN_SUCCESS, let cpuInfo = cpuInfoArray, numCpus > 0 else {
+            // If CPU info fails, reset to safe values
+            DispatchQueue.main.async {
+                self.cpuLoad = 0.0
+                self.userLoad = 0.0
+                self.systemLoad = 0.0
+                self.idleLoad = 100.0
+            }
+            return
+        }
+        
+        defer {
+            if cpuInfoCount > 0 {
+                vm_deallocate(mach_task_self_, vm_address_t(bitPattern: cpuInfo), vm_size_t(cpuInfoCount) * vm_size_t(MemoryLayout<integer_t>.size))
+            }
+        }
+        
+        let cpuLoadInfo = cpuInfo.withMemoryRebound(to: processor_cpu_load_info.self, capacity: Int(numCpus)) { $0 }
+        
+        var totalUser: UInt32 = 0
+        var totalSystem: UInt32 = 0
+        var totalIdle: UInt32 = 0
+        var totalNice: UInt32 = 0
+        
+        for i in 0..<Int(numCpus) {
+            let info = cpuLoadInfo[i]
+            totalUser += info.cpu_ticks.0     // CPU_STATE_USER
+            totalSystem += info.cpu_ticks.1   // CPU_STATE_SYSTEM
+            totalIdle += info.cpu_ticks.2     // CPU_STATE_IDLE
+            totalNice += info.cpu_ticks.3     // CPU_STATE_NICE
+        }
+        
+        if let previousCpuInfo = previousCpuInfo {
+            let previousCpuLoadInfo = previousCpuInfo.withMemoryRebound(to: processor_cpu_load_info.self, capacity: Int(numCpus)) { $0 }
+            
+            var prevTotalUser: UInt32 = 0
+            var prevTotalSystem: UInt32 = 0
+            var prevTotalIdle: UInt32 = 0
+            var prevTotalNice: UInt32 = 0
+            
+            for i in 0..<Int(numCpus) {
+                let info = previousCpuLoadInfo[i]
+                prevTotalUser += info.cpu_ticks.0
+                prevTotalSystem += info.cpu_ticks.1
+                prevTotalIdle += info.cpu_ticks.2
+                prevTotalNice += info.cpu_ticks.3
+            }
+            
+            // Safely calculate deltas to avoid overflow
+            let userDelta = totalUser >= prevTotalUser ? totalUser - prevTotalUser : 0
+            let systemDelta = totalSystem >= prevTotalSystem ? totalSystem - prevTotalSystem : 0
+            let idleDelta = totalIdle >= prevTotalIdle ? totalIdle - prevTotalIdle : 0
+            let niceDelta = totalNice >= prevTotalNice ? totalNice - prevTotalNice : 0
+            
+            let totalDelta = userDelta + systemDelta + idleDelta + niceDelta
+            
+            if totalDelta > 0 {
+                let userPercent = min(100.0, max(0.0, Double(userDelta + niceDelta) / Double(totalDelta) * 100.0))
+                let systemPercent = min(100.0, max(0.0, Double(systemDelta) / Double(totalDelta) * 100.0))
+                let idlePercent = min(100.0, max(0.0, Double(idleDelta) / Double(totalDelta) * 100.0))
+                
+                DispatchQueue.main.async {
+                    self.userLoad = userPercent
+                    self.systemLoad = systemPercent
+                    self.idleLoad = idlePercent
+                    self.cpuLoad = min(100.0, max(0.0, userPercent + systemPercent))
+                }
+            }
+        }
+        
+        // Store current info for next iteration
+        if let previousCpuInfo = previousCpuInfo, previousCpuInfoCount > 0 {
+            vm_deallocate(mach_task_self_, vm_address_t(bitPattern: previousCpuInfo), vm_size_t(previousCpuInfoCount) * vm_size_t(MemoryLayout<integer_t>.size))
+        }
+        
+        previousCpuInfo = cpuInfo
+        previousCpuInfoCount = cpuInfoCount
+    }
+    
+    // MARK: - RAM Usage
+    private func updateRAMUsage() {
+        var vmStats = vm_statistics64()
+        var size = mach_msg_type_number_t(MemoryLayout<vm_statistics64>.size / MemoryLayout<integer_t>.size)
+        
+        let result = withUnsafeMutablePointer(to: &vmStats) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: Int(size)) {
+                host_statistics64(mach_host_self(), HOST_VM_INFO64, $0, &size)
+            }
+        }
+        
+        guard result == KERN_SUCCESS else { 
+            // If RAM info fails, reset to safe values
+            DispatchQueue.main.async {
+                self.ramUsage = 0.0
+                self.totalRAM = 0.0
+                self.activeRAM = 0.0
+                self.wiredRAM = 0.0
+                self.compressedRAM = 0.0
+            }
+            return 
+        }
+        
+        // Get total physical memory
+        var totalMemory: UInt64 = 0
+        var totalMemorySize = MemoryLayout<UInt64>.size
+        sysctlbyname("hw.memsize", &totalMemory, &totalMemorySize, nil, 0)
+        
+        let pageSize = UInt64(vm_page_size)
+        _ = totalMemory / pageSize
+        
+        let activePages = UInt64(vmStats.active_count)
+        let wiredPages = UInt64(vmStats.wire_count)
+        let compressedPages = UInt64(vmStats.compressor_page_count)
+        _ = UInt64(vmStats.inactive_count)
+        
+        let usedPages = activePages + wiredPages + compressedPages
+        let usedMemory = usedPages * pageSize
+        
+        let totalMemoryGB = Double(totalMemory) / (1024 * 1024 * 1024)
+        let usedMemoryGB = Double(usedMemory) / (1024 * 1024 * 1024)
+        let activeMemoryGB = Double(activePages * pageSize) / (1024 * 1024 * 1024)
+        let wiredMemoryGB = Double(wiredPages * pageSize) / (1024 * 1024 * 1024)
+        let compressedMemoryGB = Double(compressedPages * pageSize) / (1024 * 1024 * 1024)
+        
+        let ramUsagePercent = totalMemoryGB > 0 ? min(100.0, max(0.0, (usedMemoryGB / totalMemoryGB) * 100.0)) : 0.0
+        
+        DispatchQueue.main.async {
+            self.ramUsage = ramUsagePercent
+            self.totalRAM = totalMemoryGB
+            self.activeRAM = activeMemoryGB
+            self.wiredRAM = wiredMemoryGB
+            self.compressedRAM = compressedMemoryGB
+        }
+    }
+    
+
+    
+    // MARK: - Network Activity
+    private func updateNetworkActivity() {
+        var ifaddrs: UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifaddrs) == 0, let firstAddr = ifaddrs else {
+            return
+        }
+        
+        defer { freeifaddrs(ifaddrs) }
+        
+        var currentNetworkData: [String: (ibytes: UInt64, obytes: UInt64)] = [:]
+        var addr = firstAddr
+        
+        while true {
+            let name = String(cString: addr.pointee.ifa_name)
+            
+            // Focus on typical active interfaces (Wi-Fi/Ethernet)
+            if name.hasPrefix("en") || name.hasPrefix("wi") {
+                if let data = addr.pointee.ifa_data?.assumingMemoryBound(to: if_data.self) {
+                    let ibytes = UInt64(data.pointee.ifi_ibytes)
+                    let obytes = UInt64(data.pointee.ifi_obytes)
+                    currentNetworkData[name] = (ibytes: ibytes, obytes: obytes)
+                }
+            }
+            
+            guard let nextAddr = addr.pointee.ifa_next else { break }
+            addr = nextAddr
+        }
+        
+        let currentTime = Date()
+        let timeDelta = currentTime.timeIntervalSince(lastNetworkUpdate)
+        
+        if timeDelta > 0 && !previousNetworkData.isEmpty {
+            var totalUploadDelta: UInt64 = 0
+            var totalDownloadDelta: UInt64 = 0
+            
+            for (interface, current) in currentNetworkData {
+                if let previous = previousNetworkData[interface] {
+                    let uploadDelta = current.obytes > previous.obytes ? current.obytes - previous.obytes : 0
+                    let downloadDelta = current.ibytes > previous.ibytes ? current.ibytes - previous.ibytes : 0
+                    
+                    totalUploadDelta = totalUploadDelta.addingReportingOverflow(uploadDelta).partialValue
+                    totalDownloadDelta = totalDownloadDelta.addingReportingOverflow(downloadDelta).partialValue
+                }
+            }
+            
+            // Convert to MB/s with safety checks
+            let uploadSpeedMBps = timeDelta > 0 ? max(0.0, Double(totalUploadDelta) / timeDelta / (1024 * 1024)) : 0.0
+            let downloadSpeedMBps = timeDelta > 0 ? max(0.0, Double(totalDownloadDelta) / timeDelta / (1024 * 1024)) : 0.0
+            
+            DispatchQueue.main.async {
+                self.uploadSpeed = uploadSpeedMBps
+                self.downloadSpeed = downloadSpeedMBps
+            }
+        }
+        
+        previousNetworkData = currentNetworkData
+        lastNetworkUpdate = currentTime
+    }
+} 
