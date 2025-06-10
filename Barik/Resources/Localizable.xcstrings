@@ -138,9 +138,6 @@
         }
       }
     },
-    "Brightness" : {
-
-    },
     "Channel: %@" : {
       "localizations" : {
         "ar" : {
@@ -269,6 +266,12 @@
 
     },
     "CPU Usage" : {
+
+    },
+    "Current keyboard layout: %@" : {
+
+    },
+    "Current: %@" : {
 
     },
     "Download" : {
@@ -526,16 +529,19 @@
     "Idle" : {
 
     },
-    "Memory Usage" : {
+    "Keyboard Layout" : {
 
     },
-    "Microphone" : {
+    "Memory Usage" : {
 
     },
     "Mute" : {
 
     },
     "Network Activity" : {
+
+    },
+    "No additional layouts available" : {
 
     },
     "Noise: %lld" : {
@@ -912,6 +918,9 @@
           }
         }
       }
+    },
+    "Switch to Next Layout" : {
+
     },
     "System" : {
 
