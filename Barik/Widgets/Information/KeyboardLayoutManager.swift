@@ -22,8 +22,8 @@ class KeyboardLayoutManager: ObservableObject {
     private func startMonitoring() {
         updateInputSources()
         
-        // Update every 2 seconds to detect changes
-        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
+        // Update every 10 seconds to detect changes
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
             self?.updateCurrentInputSource()
         }
     }

@@ -4,7 +4,7 @@ import Darwin
 import IOKit
 
 /// This class monitors system performance metrics: CPU, RAM, Temperature, and Network Activity.
-class SystemMonitorManager: ObservableObject {
+class SystemMonitorManager: ObservableObject, ConditionallyActivatableWidget {
     @Published var cpuLoad: Double = 0.0
     @Published var ramUsage: Double = 0.0
 
@@ -28,20 +28,97 @@ class SystemMonitorManager: ObservableObject {
     private var previousNetworkData: [String: (ibytes: UInt64, obytes: UInt64)] = [:]
     private var lastNetworkUpdate: Date = Date()
     
+    private var currentInterval: TimeInterval = 10.0
+    let widgetId = "system-monitor" // This covers both cpuram and networkactivity
+    
+    private var isActive = false
+    
     init() {
-        startMonitoring()
+        setupNotifications()
+        activateIfNeeded()
     }
     
     deinit {
         stopMonitoring()
+        NotificationCenter.default.removeObserver(self)
         if let previousCpuInfo = previousCpuInfo, previousCpuInfoCount > 0 {
             vm_deallocate(mach_task_self_, vm_address_t(bitPattern: previousCpuInfo), vm_size_t(previousCpuInfoCount) * vm_size_t(MemoryLayout<integer_t>.size))
         }
     }
     
+    private func setupNotifications() {
+        // Listen for performance mode changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("PerformanceModeChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            if let intervals = notification.object as? [String: TimeInterval],
+               let newInterval = intervals["system"] {
+                self?.updateTimerInterval(newInterval)
+            }
+        }
+        
+        // Listen for widget activation changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("WidgetActivationChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            if let activeWidgets = notification.object as? Set<String> {
+                // Activate if any system monitoring widget is active
+                let systemWidgets = ["default.cpuram", "default.networkactivity"]
+                let shouldBeActive = systemWidgets.contains { activeWidgets.contains($0) }
+                
+                if shouldBeActive {
+                    self?.activate()
+                } else {
+                    self?.deactivate()
+                }
+            }
+        }
+    }
+    
+    private func activateIfNeeded() {
+        let activationManager = WidgetActivationManager.shared
+        let systemWidgets = ["default.cpuram", "default.networkactivity"]
+        let shouldBeActive = systemWidgets.contains { activationManager.isWidgetActive($0) }
+        
+        if shouldBeActive {
+            activate()
+        }
+    }
+    
+    func activate() {
+        guard !isActive else { return }
+        isActive = true
+        
+        // Get current performance mode interval
+        let performanceManager = PerformanceModeManager.shared
+        let intervals = performanceManager.getTimerIntervals(for: performanceManager.currentMode)
+        currentInterval = intervals["system"] ?? 10.0
+        
+        startMonitoring()
+    }
+    
+    func deactivate() {
+        guard isActive else { return }
+        isActive = false
+        stopMonitoring()
+    }
+    
+    private func updateTimerInterval(_ newInterval: TimeInterval) {
+        guard isActive else { return }
+        currentInterval = newInterval
+        
+        // Restart timer with new interval
+        stopMonitoring()
+        startMonitoring()
+    }
+
     private func startMonitoring() {
-        // Update every 1 second
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        // Update every X seconds based on performance mode
+        timer = Timer.scheduledTimer(withTimeInterval: currentInterval, repeats: true) { [weak self] _ in
             // Run system calls on background queue to avoid blocking UI
             DispatchQueue.global(qos: .utility).async {
                 self?.updateAllMetrics()

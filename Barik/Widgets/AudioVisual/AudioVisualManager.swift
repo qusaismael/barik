@@ -26,8 +26,8 @@ class AudioVisualManager: ObservableObject {
     }
     
     private func startMonitoring() {
-        // Update every 0.5 seconds for real-time feel
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        // Update every 10 seconds for optimal energy efficiency
+        timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { [weak self] _ in
             self?.updateStatus()
         }
         updateStatus()
@@ -40,72 +40,91 @@ class AudioVisualManager: ObservableObject {
     
     /// Updates all audio and visual status properties
     private func updateStatus() {
-        DispatchQueue.main.async { [weak self] in
-            self?.updateVolumeStatus()
-        }
+        self.updateVolumeStatus()
     }
     
     /// Updates volume level and mute status
     private func updateVolumeStatus() {
-        var outputDeviceID: AudioDeviceID = kAudioObjectUnknown
-        var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
-        
-        var propertyAddress = AudioObjectPropertyAddress(
-            mSelector: kAudioHardwarePropertyDefaultOutputDevice,
-            mScope: kAudioObjectPropertyScopeGlobal,
-            mElement: kAudioObjectPropertyElementMain
-        )
-        
-        let result = AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &propertyAddress,
-            0,
-            nil,
-            &propertySize,
-            &outputDeviceID
-        )
-        
-        guard result == noErr else { return }
-        
-        // Get volume level - using master volume property
-        var volume: Float32 = 0.0
-        propertySize = UInt32(MemoryLayout<Float32>.size)
-        propertyAddress.mSelector = kAudioDevicePropertyVolumeScalar
-        propertyAddress.mScope = kAudioObjectPropertyScopeOutput
-        propertyAddress.mElement = kAudioObjectPropertyElementMain
-        
-        let volumeResult = AudioObjectGetPropertyData(
-            outputDeviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propertySize,
-            &volume
-        )
-        
-        if volumeResult == noErr {
-            self.volumeLevel = volume
-        } else {
-            // Fallback: try to get system volume directly
-            self.volumeLevel = 0.5 // Default value
-        }
-        
-        // Get mute status
-        var muteValue: UInt32 = 0
-        propertySize = UInt32(MemoryLayout<UInt32>.size)
-        propertyAddress.mSelector = kAudioDevicePropertyMute
-        
-        let muteResult = AudioObjectGetPropertyData(
-            outputDeviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propertySize,
-            &muteValue
-        )
-        
-        if muteResult == noErr {
-            self.isMuted = muteValue != 0
+        // Run audio API calls on background queue to avoid blocking
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let self = self else { return }
+            
+            var outputDeviceID: AudioDeviceID = kAudioObjectUnknown
+            var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
+            
+            var propertyAddress = AudioObjectPropertyAddress(
+                mSelector: kAudioHardwarePropertyDefaultOutputDevice,
+                mScope: kAudioObjectPropertyScopeGlobal,
+                mElement: kAudioObjectPropertyElementMain
+            )
+            
+            let result = AudioObjectGetPropertyData(
+                AudioObjectID(kAudioObjectSystemObject),
+                &propertyAddress,
+                0,
+                nil,
+                &propertySize,
+                &outputDeviceID
+            )
+            
+            guard result == noErr && outputDeviceID != kAudioObjectUnknown else { 
+                DispatchQueue.main.async {
+                    self.volumeLevel = 0.0
+                    self.isMuted = false
+                }
+                return 
+            }
+            
+            // Get volume level - using master volume property
+            var volume: Float32 = 0.0
+            propertySize = UInt32(MemoryLayout<Float32>.size)
+            propertyAddress.mSelector = kAudioDevicePropertyVolumeScalar
+            propertyAddress.mScope = kAudioObjectPropertyScopeOutput
+            propertyAddress.mElement = kAudioObjectPropertyElementMain
+            
+            let volumeResult = AudioObjectGetPropertyData(
+                outputDeviceID,
+                &propertyAddress,
+                0,
+                nil,
+                &propertySize,
+                &volume
+            )
+            
+            // Get mute status
+            var muteValue: UInt32 = 0
+            propertySize = UInt32(MemoryLayout<UInt32>.size)
+            propertyAddress.mSelector = kAudioDevicePropertyMute
+            propertyAddress.mScope = kAudioObjectPropertyScopeOutput
+            propertyAddress.mElement = kAudioObjectPropertyElementMain
+            
+            let muteResult = AudioObjectGetPropertyData(
+                outputDeviceID,
+                &propertyAddress,
+                0,
+                nil,
+                &propertySize,
+                &muteValue
+            )
+            
+            // Update UI on main queue
+            DispatchQueue.main.async {
+                if volumeResult == noErr {
+                    self.volumeLevel = max(0.0, min(1.0, volume))
+                } else {
+                    // Fallback: keep current volume or set to reasonable default
+                    if self.volumeLevel == 0.0 {
+                        self.volumeLevel = 0.5
+                    }
+                }
+                
+                if muteResult == noErr {
+                    self.isMuted = muteValue != 0
+                } else {
+                    // If we can't determine mute status, assume not muted
+                    self.isMuted = false
+                }
+            }
         }
     }
     

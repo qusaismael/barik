@@ -138,6 +138,9 @@
         }
       }
     },
+    "Changes update intervals for widgets to optimize energy consumption" : {
+
+    },
     "Channel: %@" : {
       "localizations" : {
         "ar" : {
@@ -667,6 +670,12 @@
           }
         }
       }
+    },
+    "Performance Mode" : {
+
+    },
+    "Performance Mode: %@" : {
+
     },
     "RAM" : {
 

@@ -2,10 +2,14 @@ import AppKit
 import Combine
 import Foundation
 
-class SpacesViewModel: ObservableObject {
+class SpacesViewModel: ObservableObject, ConditionallyActivatableWidget {
     @Published var spaces: [AnySpace] = []
     private var timer: Timer?
     private var provider: AnySpacesProvider?
+    private var currentInterval: TimeInterval = 5.0
+    let widgetId = "default.spaces"
+    
+    private var isActive = false
 
     init() {
         let runningApps = NSWorkspace.shared.runningApplications.compactMap {
@@ -18,15 +22,81 @@ class SpacesViewModel: ObservableObject {
         } else {
             provider = nil
         }
-        startMonitoring()
+        
+        setupNotifications()
+        activateIfNeeded()
     }
 
     deinit {
         stopMonitoring()
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func setupNotifications() {
+        // Listen for performance mode changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("PerformanceModeChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            if let intervals = notification.object as? [String: TimeInterval],
+               let newInterval = intervals["spaces"] {
+                self?.updateTimerInterval(newInterval)
+            }
+        }
+        
+        // Listen for widget activation changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("WidgetActivationChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            if let activeWidgets = notification.object as? Set<String> {
+                if activeWidgets.contains(self?.widgetId ?? "") {
+                    self?.activate()
+                } else {
+                    self?.deactivate()
+                }
+            }
+        }
+    }
+    
+    private func activateIfNeeded() {
+        let activationManager = WidgetActivationManager.shared
+        if activationManager.isWidgetActive(widgetId) {
+            activate()
+        }
+    }
+    
+    func activate() {
+        guard !isActive else { return }
+        isActive = true
+        
+        // Get current performance mode interval
+        let performanceManager = PerformanceModeManager.shared
+        let intervals = performanceManager.getTimerIntervals(for: performanceManager.currentMode)
+        currentInterval = intervals["spaces"] ?? 5.0
+        
+        startMonitoring()
+    }
+    
+    func deactivate() {
+        guard isActive else { return }
+        isActive = false
+        stopMonitoring()
+    }
+    
+    private func updateTimerInterval(_ newInterval: TimeInterval) {
+        guard isActive else { return }
+        currentInterval = newInterval
+        
+        // Restart timer with new interval
+        stopMonitoring()
+        startMonitoring()
     }
 
     private func startMonitoring() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) {
+        timer = Timer.scheduledTimer(withTimeInterval: currentInterval, repeats: true) {
             [weak self] _ in
             self?.loadSpaces()
         }

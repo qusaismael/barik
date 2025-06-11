@@ -67,8 +67,8 @@ struct MenuBarView: View {
             NetworkActivityWidget()
                 .environmentObject(config)
 
-        case "default.volume":
-            VolumeWidget()
+        case "default.performance":
+            PerformanceModeWidget()
                 .environmentObject(config)
 
         case "default.keyboardlayout":
