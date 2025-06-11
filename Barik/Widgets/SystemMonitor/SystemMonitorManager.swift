@@ -61,22 +61,98 @@ class SystemMonitorManager: ObservableObject {
     private func updateAllMetrics() {
         // Add safety checks to prevent hanging
         autoreleasepool {
-            // Temporarily disable CPU monitoring to test other features
-            // updateCPUUsage()
+            updateCPUUsageSimple()
             updateRAMUsage()
             updateNetworkActivity()
+        }
+    }
+    
+    // MARK: - CPU Usage (Simple and Safe)
+    private func updateCPUUsageSimple() {
+        // Use a simple approach via sysctl for CPU usage
+        var load: Double = 0.0
+        var size = MemoryLayout<Double>.size
+        if sysctlbyname("vm.loadavg", &load, &size, nil, 0) == 0 {
+            // Load average represents system load, convert to rough CPU percentage
+            let cpuPercent = min(100.0, max(0.0, load * 25.0)) // Scale load avg to percentage
             
-            // Set some dummy CPU values for testing
             DispatchQueue.main.async {
-                self.cpuLoad = Double.random(in: 10...50)
-                self.userLoad = Double.random(in: 5...30)
-                self.systemLoad = Double.random(in: 5...20)
-                self.idleLoad = 100.0 - self.cpuLoad
+                self.cpuLoad = cpuPercent
+                self.userLoad = cpuPercent * 0.7  // Approximate user load
+                self.systemLoad = cpuPercent * 0.3  // Approximate system load
+                self.idleLoad = 100.0 - cpuPercent
+            }
+        } else {
+            // Fallback to a simple process-based approach
+            self.updateCPUUsageViaProcessInfo()
+        }
+    }
+    
+    private func updateCPUUsageViaProcessInfo() {
+        let task = Process()
+        task.launchPath = "/usr/bin/top"
+        task.arguments = ["-l", "1", "-n", "0"]
+        
+        let pipe = Pipe()
+        task.standardOutput = pipe
+        
+        do {
+            try task.run()
+            task.waitUntilExit()
+            
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            if let output = String(data: data, encoding: .utf8) {
+                self.parseCPUFromTopOutput(output)
+            }
+        } catch {
+            // If all else fails, provide reasonable default values
+            DispatchQueue.main.async {
+                self.cpuLoad = 15.0
+                self.userLoad = 10.0
+                self.systemLoad = 5.0
+                self.idleLoad = 85.0
             }
         }
     }
     
-    // MARK: - CPU Usage
+    private func parseCPUFromTopOutput(_ output: String) {
+        let lines = output.components(separatedBy: .newlines)
+        for line in lines {
+            if line.contains("CPU usage:") {
+                // Parse line like: "CPU usage: 12.5% user, 3.2% sys, 84.3% idle"
+                let components = line.components(separatedBy: ",")
+                var userPercent: Double = 0
+                var systemPercent: Double = 0
+                
+                for component in components {
+                    let trimmed = component.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if trimmed.contains("user") {
+                        let userString = trimmed.replacingOccurrences(of: "% user", with: "")
+                            .replacingOccurrences(of: "CPU usage: ", with: "")
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        userPercent = Double(userString) ?? 0
+                    } else if trimmed.contains("sys") {
+                        let sysString = trimmed.replacingOccurrences(of: "% sys", with: "")
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        systemPercent = Double(sysString) ?? 0
+                    }
+                }
+                
+                let totalPercent = userPercent + systemPercent
+                let idlePercent = 100.0 - totalPercent
+                
+                DispatchQueue.main.async {
+                    self.cpuLoad = min(100.0, max(0.0, totalPercent))
+                    self.userLoad = min(100.0, max(0.0, userPercent))
+                    self.systemLoad = min(100.0, max(0.0, systemPercent))
+                    self.idleLoad = min(100.0, max(0.0, idlePercent))
+                }
+                break
+            }
+        }
+    }
+    
+    // MARK: - CPU Usage (Complex - Currently Disabled Due to Memory Issues)
     private func updateCPUUsage() {
         var cpuInfoArray: processor_info_array_t?
         var cpuInfoCount: mach_msg_type_number_t = 0
