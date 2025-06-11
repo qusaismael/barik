@@ -35,7 +35,8 @@ class SystemMonitorManager: ObservableObject, ConditionallyActivatableWidget {
     
     init() {
         setupNotifications()
-        activateIfNeeded()
+        // For now, always activate to ensure widgets work
+        activate()
     }
     
     deinit {
@@ -85,12 +86,20 @@ class SystemMonitorManager: ObservableObject, ConditionallyActivatableWidget {
         let shouldBeActive = systemWidgets.contains { activationManager.isWidgetActive($0) }
         
         if shouldBeActive {
+            print("SystemMonitorManager: Activating via WidgetActivationManager")
+            activate()
+        } else {
+            // Fallback: activate anyway for now to prevent breaking the widget
+            print("SystemMonitorManager: Fallback activation")
             activate()
         }
     }
     
     func activate() {
-        guard !isActive else { return }
+        guard !isActive else { 
+            return 
+        }
+        
         isActive = true
         
         // Get current performance mode interval

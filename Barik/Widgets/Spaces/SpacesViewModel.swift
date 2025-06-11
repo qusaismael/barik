@@ -24,7 +24,8 @@ class SpacesViewModel: ObservableObject, ConditionallyActivatableWidget {
         }
         
         setupNotifications()
-        activateIfNeeded()
+        // For now, always activate to ensure widgets work
+        activate()
     }
 
     deinit {
@@ -45,31 +46,27 @@ class SpacesViewModel: ObservableObject, ConditionallyActivatableWidget {
             }
         }
         
-        // Listen for widget activation changes
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name("WidgetActivationChanged"),
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let activeWidgets = notification.object as? Set<String> {
-                if activeWidgets.contains(self?.widgetId ?? "") {
-                    self?.activate()
-                } else {
-                    self?.deactivate()
-                }
-            }
-        }
-    }
-    
-    private func activateIfNeeded() {
-        let activationManager = WidgetActivationManager.shared
-        if activationManager.isWidgetActive(widgetId) {
-            activate()
-        }
+        // For future use - widget activation/deactivation
+        // NotificationCenter.default.addObserver(
+        //     forName: NSNotification.Name("WidgetActivationChanged"),
+        //     object: nil,
+        //     queue: .main
+        // ) { [weak self] notification in
+        //     if let activeWidgets = notification.object as? Set<String> {
+        //         if activeWidgets.contains(self?.widgetId ?? "") {
+        //             self?.activate()
+        //         } else {
+        //             self?.deactivate()
+        //         }
+        //     }
+        // }
     }
     
     func activate() {
-        guard !isActive else { return }
+        guard !isActive else { 
+            return 
+        }
+        
         isActive = true
         
         // Get current performance mode interval

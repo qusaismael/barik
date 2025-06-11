@@ -9,6 +9,7 @@ class WidgetActivationManager: ObservableObject {
     private let configManager = ConfigManager.shared
     
     private init() {
+        // Force immediate update on initialization
         updateActiveWidgets()
         
         // Listen for config changes
@@ -18,6 +19,11 @@ class WidgetActivationManager: ObservableObject {
             name: NSNotification.Name("ConfigChanged"),
             object: nil
         )
+        
+        // Trigger initial activation after a brief delay to ensure everything is ready
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.updateActiveWidgets()
+        }
     }
     
     @objc private func configDidChange() {
@@ -27,6 +33,8 @@ class WidgetActivationManager: ObservableObject {
     private func updateActiveWidgets() {
         let displayedWidgets = configManager.config.rootToml.widgets.displayed
         let newActiveWidgets = Set(displayedWidgets.map { $0.id })
+        
+        print("WidgetActivationManager: Active widgets updated to: \(newActiveWidgets)")
         
         DispatchQueue.main.async {
             self.activeWidgets = newActiveWidgets
@@ -41,7 +49,9 @@ class WidgetActivationManager: ObservableObject {
     
     /// Checks if a widget with the given ID is currently active (displayed)
     func isWidgetActive(_ widgetId: String) -> Bool {
-        return activeWidgets.contains(widgetId)
+        let isActive = activeWidgets.contains(widgetId)
+        print("WidgetActivationManager: Checking if \(widgetId) is active: \(isActive)")
+        return isActive
     }
     
     /// Get all active widget IDs

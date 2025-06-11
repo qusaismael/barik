@@ -16,7 +16,8 @@ class BatteryManager: ObservableObject, ConditionallyActivatableWidget {
 
     init() {
         setupNotifications()
-        activateIfNeeded()
+        // For now, always activate to ensure widgets work
+        activate()
     }
 
     deinit {
@@ -53,15 +54,11 @@ class BatteryManager: ObservableObject, ConditionallyActivatableWidget {
         }
     }
     
-    private func activateIfNeeded() {
-        let activationManager = WidgetActivationManager.shared
-        if activationManager.isWidgetActive(widgetId) {
-            activate()
-        }
-    }
-    
     func activate() {
-        guard !isActive else { return }
+        guard !isActive else { 
+            return 
+        }
+        
         isActive = true
         
         // Get current performance mode interval

@@ -202,7 +202,8 @@ final class NowPlayingManager: ObservableObject, ConditionallyActivatableWidget 
 
     private init() {
         setupNotifications()
-        activateIfNeeded()
+        // For now, always activate to ensure widgets work
+        activate()
     }
     
     deinit {
@@ -221,32 +222,13 @@ final class NowPlayingManager: ObservableObject, ConditionallyActivatableWidget 
                 self?.updateTimerInterval(newInterval)
             }
         }
-        
-        // Listen for widget activation changes
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name("WidgetActivationChanged"),
-            object: nil,
-            queue: .main
-        ) { [weak self] notification in
-            if let activeWidgets = notification.object as? Set<String> {
-                if activeWidgets.contains(self?.widgetId ?? "") {
-                    self?.activate()
-                } else {
-                    self?.deactivate()
-                }
-            }
-        }
-    }
-    
-    private func activateIfNeeded() {
-        let activationManager = WidgetActivationManager.shared
-        if activationManager.isWidgetActive(widgetId) {
-            activate()
-        }
     }
     
     func activate() {
-        guard !isActive else { return }
+        guard !isActive else { 
+            return 
+        }
+        
         isActive = true
         
         // Get current performance mode interval
