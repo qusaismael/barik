@@ -63,6 +63,15 @@ Or you can download from [Releases](https://github.com/mocki-toki/barik/releases
 
 When you launch **barik** for the first time, it will create a `~/.barik-config.toml` file with an example customization for your new menu bar.
 
+### Menu Bar Position
+
+You can position the menu bar at the top or bottom of the screen to make use of both the macOS native menu bar and Barik bar as well:
+
+```toml
+[experimental]
+position = "bottom"  # Options: "top" (default) or "bottom"
+```
+
 ```toml
 # If you installed yabai or aerospace without using Homebrew,
 # manually set the path to the binary. For example:
