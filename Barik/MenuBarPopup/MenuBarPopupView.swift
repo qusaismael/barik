@@ -153,7 +153,15 @@ struct MenuBarPopupView<Content: View>: View {
     }
 
     var computedYOffset: CGFloat {
-        return viewFrame.height / 2
+        let isBottom = configManager.config.experimental.position == .bottom
+        
+        if isBottom {
+            // For bottom positioning, use the original logic
+            return viewFrame.height / 2
+        } else {
+            // For top positioning, reduce the offset to bring popups closer
+            return viewFrame.height / 2 - 65  // Bring closer to top menu bar
+        }
     }
 }
 
