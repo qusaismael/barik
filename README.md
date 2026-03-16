@@ -38,6 +38,7 @@ https://github.com/user-attachments/assets/d3799e24-c077-4c6a-a7da-a1f2eee1a07f
 ## Features
 
 ### 🎯 **Core Functionality**
+
 - **Workspace Management**: Real-time display of spaces with window titles and application names
 - **Interactive Popups**: Click widgets to access detailed views and controls
 - **Multi-App Support**: Works with yabai, AeroSpace, or standalone
@@ -47,49 +48,58 @@ https://github.com/user-attachments/assets/d3799e24-c077-4c6a-a7da-a1f2eee1a07f
 ### 🧩 **Available Widgets**
 
 #### **Workspace & Navigation**
+
 - **`default.spaces`** - Display current spaces/workspaces with window information
 - **`spacer`** - Flexible spacing element
 - **`divider`** - Visual separator between widget groups
 
 #### **System Monitoring**
+
 - **`default.battery`** - Battery status with charging indicators and percentage
 - **`default.cpuram`** - CPU and RAM usage with configurable thresholds
 - **`default.networkactivity`** - Real-time network upload/download speeds
 - **`default.performance`** - Performance mode toggle (battery/balanced/max performance)
 
-#### **Network & Connectivity**  
+#### **Network & Connectivity**
+
 - **`default.network`** - Wi-Fi and Ethernet status with detailed information
 - **`default.keyboardlayout`** - Current keyboard layout with quick switching
 
 #### **Time & Calendar**
+
 - **`default.time`** - Customizable time display with calendar integration
 - Calendar events support with allow/deny lists
 - Multiple timezone support
 - Configurable date/time formats
 
 #### **Media & Audio**
+
 - **`default.nowplaying`** - Music control for Spotify and Apple Music
 - Album art display with rotation animation
 - Playback controls (previous, play/pause, next)
 - Progress tracking and time remaining
 
 #### **System Utilities**
+
 - **`system-banner`** - System notifications and alerts
 
 ### 🎨 **Customization Features**
 
 #### **Positioning**
+
 - Top or bottom screen placement
 - Custom horizontal padding and spacing
 - Flexible widget ordering
 
 #### **Appearance**
+
 - Blur effects with 6 intensity levels
 - Widget background customization
 - Configurable menu bar height
 - Smooth animations and transitions
 
 #### **Performance Optimization**
+
 - Three performance modes with different update intervals
 - Battery-conscious operation
 - Intelligent widget activation/deactivation
@@ -161,6 +171,7 @@ displayed = [
 space.show-key = true                    # Show space number/character
 window.show-title = true                 # Show window titles
 window.title.max-length = 50             # Maximum title length
+window.notch.width = 200                 # Options: <float> (recommended [200 | 0] for displays with and without a notch respectivly)
 
 # Applications that always show app name instead of window title
 window.title.always-display-app-name-for = ["Mail", "Chrome", "Arc", "Finder"]
@@ -264,7 +275,7 @@ blur = 3                                 # Background blur intensity: 1-6
 Barik includes intelligent performance management:
 
 - **Battery Saver**: Longest update intervals for maximum battery life
-- **Balanced**: Moderate intervals balancing performance and efficiency  
+- **Balanced**: Moderate intervals balancing performance and efficiency
 - **Max Performance**: Shortest intervals for most responsive updates
 
 ### Interactive Popups
@@ -289,7 +300,7 @@ Click widgets to access detailed controls:
 Many widgets support different popup layouts:
 
 - **Box**: Compact square layout
-- **Horizontal**: Wide landscape layout  
+- **Horizontal**: Wide landscape layout
 - **Vertical**: Tall portrait layout
 
 Configure via the `view-variant` setting in each widget's popup section.
@@ -314,16 +325,19 @@ If you’re accustomed to using menu items from the system menu bar, simply move
 ## Troubleshooting
 
 ### Performance Issues
+
 - Switch to **Battery Saver** or **Balanced** performance mode
 - Reduce the number of active widgets
 - Increase widget update intervals manually
 
 ### Window Manager Integration
+
 - Ensure yabai/AeroSpace is running and properly configured
 - Check that the binary path is correct in configuration
 - Verify top padding is set appropriately
 
 ### Widget Not Updating
+
 - Check widget activation status
 - Verify required permissions (calendar, location for network widget)
 - Review configuration syntax in `~/.barik-config.toml`

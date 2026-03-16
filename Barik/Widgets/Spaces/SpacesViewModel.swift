@@ -115,7 +115,14 @@ class SpacesViewModel: ObservableObject, ConditionallyActivatableWidget {
                 }
                 return
             }
-            let sortedSpaces = spaces.sorted { $0.id < $1.id }
+            let sortedSpaces = spaces.sorted { a, b in
+                // Important to avoid 1, 10, 11, 2 as the sorted order
+                if let intA = Int(a.id), let intB = Int(b.id) {
+                    return intA < intB
+                }
+                // Else return to string comparison
+                return a.id < b.id
+            }
             DispatchQueue.main.async {
                 self.spaces = sortedSpaces
             }
