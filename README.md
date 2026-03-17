@@ -20,21 +20,6 @@
 
 <br>
 
-<div align="center">
-  <h3>Screenshots</h3>
-  <img src="resources/preview-image-light.png" alt="Barik Light Theme">
-  <img src="resources/preview-image-dark.png" alt="Barik Dark Theme">
-</div>
-<br>
-<div align="center">
-  <h3>Video</h3>
-  <video src="https://github.com/user-attachments/assets/33cfd2c2-e961-4d04-8012-664db0113d4f">
-</div>
-    
-https://github.com/user-attachments/assets/d3799e24-c077-4c6a-a7da-a1f2eee1a07f
-
-<br>
-
 ## Features
 
 ### 🎯 **Core Functionality**
